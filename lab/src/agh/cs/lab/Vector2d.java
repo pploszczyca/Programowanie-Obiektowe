@@ -3,7 +3,7 @@ package agh.cs.lab;
 import org.junit.Test;
 
 public class Vector2d {
-    final int x;
+    final int x;    // public
     final int y;
 
     public Vector2d(int x, int y){
@@ -23,7 +23,7 @@ public class Vector2d {
         return x >= other.x && y >= other.y;
     }
 
-    public Vector2d upperRight(Vector2d other){
+    public Vector2d upperRight(Vector2d other){ // Math.max
         int newX = x > other.x ? x : other.x;
         int newY = y > other.y ? y : other.y;
 

@@ -1,4 +1,4 @@
-package agh.cs.lab;
+package agh.cs.lab; // nie mieszamy testów z kodem "produkcyjnym"
 
 import org.junit.Assert;
 import org.junit.Test;

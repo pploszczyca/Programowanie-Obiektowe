@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class Vector2dTest {
     @Test
-    public void testEquels(){
+    public void testEquels(){   //Equals
         Vector2d tmp = new Vector2d(0,0);
 
         Assert.assertTrue(tmp.equals(tmp));
@@ -21,7 +21,7 @@ public class Vector2dTest {
     }
 
     @Test
-    public void testPrecedes(){
+    public void testPrecedes(){ // ani jednego przypadku negatywnego (assertFalse)
         Assert.assertTrue(new Vector2d(10, 10).precedes(new Vector2d(20, 20)));
         Assert.assertTrue(new Vector2d(20, 20).precedes(new Vector2d(20, 30)));
     }
@@ -92,11 +92,11 @@ public class Vector2dTest {
 
     @Test
     public void isSubtracting(){
-        Vector2d tmp = new Vector2d(1, 2);
+        Vector2d tmp = new Vector2d(1, 2);  // tmp to nie szczęśliwa nazwa
         Vector2d tmp2 = tmp.subtract(new Vector2d(3,5));
 
         Assert.assertEquals(tmp2.x, -2);
-        Assert.assertEquals(tmp2.y, -3);
+        Assert.assertEquals(tmp2.y, -3);    // skoro Vector2d ma equals to można to zbić w jedną linijkę
 
 
         tmp2 = tmp.subtract(new Vector2d(-3,-5));

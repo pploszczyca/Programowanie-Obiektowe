@@ -12,7 +12,7 @@ public enum MapDirection{
             case SOUTH: return "Południe";
             case EAST: return "Wschód";
             case WEST: return "Zachód";
-            default: return "";
+            default: return ""; // zwracanie prawidłowego napisu w bardzo nieprawidłowej sytuacji to zły pomysł - trudno wytropić błąd
         }
     }
 
