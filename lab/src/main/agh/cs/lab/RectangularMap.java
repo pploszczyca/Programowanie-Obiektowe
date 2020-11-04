@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RectangularMap implements IWorldMap{
-    private int width;
+    private int width;  // potrzebuje Pan tych dwóch pól?
     private int height;
-    private List<Animal> animals;
+    private List<Animal> animals;   // to może być finalne
     final Vector2d lowerLeft = new Vector2d(0,0);
     final Vector2d upperRight;
 
     public RectangularMap(int width, int height){
         this.width = width;
         this.height = height;
-        upperRight = new Vector2d(width, height);
+        upperRight = new Vector2d(width, height);   // width - 1
         animals = new ArrayList<>();
     }
 
@@ -49,7 +49,7 @@ public class RectangularMap implements IWorldMap{
     }
 
     @Override
-    public Object objectAt(Vector2d position) {
+    public Object objectAt(Vector2d position) { // wygląda jak isOccupied
         for(Animal animalOnMap: animals){
             if(animalOnMap.getPosition().equals(position))
                 return animalOnMap;
@@ -59,7 +59,7 @@ public class RectangularMap implements IWorldMap{
     }
 
     public String toString(){
-        MapVisualizer visualizer = new MapVisualizer(this);
+        MapVisualizer visualizer = new MapVisualizer(this); // można zapamiętać visualizer
 
         return visualizer.draw(lowerLeft, upperRight);
     }

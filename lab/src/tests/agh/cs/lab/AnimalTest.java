@@ -10,7 +10,7 @@ public class AnimalTest {
         Animal animal = new Animal(new RectangularMap(4,4));
 
         animal.move(MoveDirection.RIGHT);
-        Assert.assertEquals(animal.toString() + " " + animal.getPosition().toString(), "E (2,2)");
+        Assert.assertEquals(animal.toString() + " " + animal.getPosition().toString(), "E (2,2)");  // skoro ma Pan getPosition, to nie lepiej to porównać z wektorem, a nie Stringiem?
         animal.move(MoveDirection.RIGHT);
         animal.move(MoveDirection.RIGHT);
         Assert.assertEquals(animal.toString() + " " + animal.getPosition().toString(), "W (2,2)");

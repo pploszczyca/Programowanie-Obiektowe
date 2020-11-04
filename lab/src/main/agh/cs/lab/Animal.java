@@ -3,7 +3,7 @@ package agh.cs.lab;
 public class Animal {
     private MapDirection direction;
     private Vector2d position;
-    private IWorldMap map;
+    private IWorldMap map;  // to może być finalne
 
     public Animal(IWorldMap map){
         this.map = map;
@@ -11,7 +11,7 @@ public class Animal {
         position = new Vector2d(2,2);
     }
 
-    public Animal(IWorldMap map, Vector2d initialPosition){
+    public Animal(IWorldMap map, Vector2d initialPosition){ // DRY
         this.map = map;
         direction = MapDirection.NORTH;
         position = initialPosition;
