@@ -3,59 +3,10 @@ package agh.cs.lab;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RectangularMap implements IWorldMap{
-    private int width;
-    private int height;
-    private List<Animal> animals;
-    final Vector2d lowerLeft = new Vector2d(0,0);
-    final Vector2d upperRight;
-
+public class RectangularMap extends AbstractWorldMap{
     public RectangularMap(int width, int height){
-        this.width = width;
-        this.height = height;
-        upperRight = new Vector2d(width, height);
-        animals = new ArrayList<>();
-    }
-
-    @Override
-    public boolean isOccupied(Vector2d position) {
-        for(Animal animalOnMap: animals){
-            if(animalOnMap.getPosition().equals(position))
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canMoveTo(Vector2d position) {
-        return position.follows(lowerLeft) && position.precedes(upperRight) && !isOccupied(position);
-    }
-
-    @Override
-    public void run(MoveDirection[] directions) {
-        int n = animals.size();
-        for(int i = 0; i < directions.length; i++){
-            animals.get(i%n).move(directions[i]);
-        }
-    }
-
-    @Override
-    public boolean place(Animal animal) {
-        if(!canMoveTo(animal.getPosition()))
-            return false;
-
-        animals.add(animal);
-        return true;
-    }
-
-    @Override
-    public Object objectAt(Vector2d position) {
-        for(Animal animalOnMap: animals){
-            if(animalOnMap.getPosition().equals(position))
-                return animalOnMap;
-        }
-
-        return null;
+        super(width, height);
+        lowerLeft = new Vector2d(0,0);
     }
 
     public String toString(){

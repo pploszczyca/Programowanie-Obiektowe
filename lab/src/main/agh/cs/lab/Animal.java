@@ -6,9 +6,7 @@ public class Animal {
     private IWorldMap map;
 
     public Animal(IWorldMap map){
-        this.map = map;
-        direction = MapDirection.NORTH;
-        position = new Vector2d(2,2);
+        this(map, new Vector2d(2,2));
     }
 
     public Animal(IWorldMap map, Vector2d initialPosition){
@@ -43,7 +41,7 @@ public class Animal {
             else
                 newPosition = position.subtract(this.direction.toUnitVector());
 
-            if(map.canMoveTo(newPosition))        // newPosition.precedes(new Vector2d( 4,4) ) && newPosition.follows(new Vector2d(0,0))
+            if(map.canMoveTo(newPosition))
                 position = newPosition;
         }
     }
