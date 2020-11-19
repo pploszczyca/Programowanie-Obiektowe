@@ -9,7 +9,7 @@ public class GrassField extends AbstractWorldMap {
     private final List<Grass> grassFields;
 
     public GrassField(int grassAmount){
-        super(Integer.MAX_VALUE,Integer.MAX_VALUE);
+        super(Integer.MAX_VALUE,Integer.MAX_VALUE); // Szerokość mapy to MAX_VALUE, czy raczej 2*MAX_VALUE+2?
         lowerLeft = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
         grassFields = new ArrayList<>();
         this.grassAmount = grassAmount;
@@ -18,7 +18,7 @@ public class GrassField extends AbstractWorldMap {
 
     }
 
-    public void placeRandomGrass(){
+    public void placeRandomGrass(){ // to nie powinno być publiczne
         Random r = new Random();
         int endPoint, x, y;
 
@@ -27,7 +27,7 @@ public class GrassField extends AbstractWorldMap {
             x = r.nextInt(endPoint);
             y = r.nextInt(endPoint);
 
-            while (isOccupied(new Vector2d(x, y))) {
+            while (isOccupied(new Vector2d(x, y))) {    // polecam do-while
                 x = r.nextInt(endPoint);
                 y = r.nextInt(endPoint);
             }
@@ -64,7 +64,7 @@ public class GrassField extends AbstractWorldMap {
 
 
     public String toString(){
-        Vector2d cornerDownVector = new Vector2d(0,0);
+        Vector2d cornerDownVector = new Vector2d(0,0);  // a jak wszystkie zwierzęta poszły na północ, a trawy nie ma?
         Vector2d cornerUpVector = new Vector2d((int) Math.round(Math.sqrt(10*grassAmount)), (int) Math.round(Math.sqrt(10*grassAmount)));
 
         for(Animal animal: animals){

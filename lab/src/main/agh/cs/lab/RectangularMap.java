@@ -10,7 +10,7 @@ public class RectangularMap extends AbstractWorldMap{
     }
 
     public String toString(){
-        MapVisualizer visualizer = new MapVisualizer(this);
+        MapVisualizer visualizer = new MapVisualizer(this); // po coś Pan tworzył visualizera w mapie abstrakcyjnej
 
         return visualizer.draw(lowerLeft, upperRight);
     }

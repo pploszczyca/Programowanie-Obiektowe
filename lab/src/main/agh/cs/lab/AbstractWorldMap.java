@@ -5,12 +5,12 @@ import java.util.List;
 
 abstract class AbstractWorldMap implements IWorldMap{
     final protected List<Animal> animals;
-    protected Vector2d lowerLeft;
+    protected Vector2d lowerLeft;   // czy to na pewno jest część wspólna obu map?
     protected Vector2d upperRight;
-    MapVisualizer visualizer ;
+    MapVisualizer visualizer ;  // to pole może być finalne i prywatne
 
     public AbstractWorldMap(int width, int height){
-        upperRight = new Vector2d(width, height);
+        upperRight = new Vector2d(width, height);   // width - 1
         animals = new ArrayList<>();
         visualizer = new MapVisualizer(this);
     }
@@ -54,6 +54,6 @@ abstract class AbstractWorldMap implements IWorldMap{
         return null;
     }
 
-    public abstract String toString();
+    public abstract String toString();  // ta metoda miała być tutaj zaimplementowana
 
 }
