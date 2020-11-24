@@ -1,7 +1,7 @@
 package agh.cs.lab;
 
 public class Grass {
-    private Vector2d position;
+    final private Vector2d position;
 
     public Grass(Vector2d position){
         this.position = position;

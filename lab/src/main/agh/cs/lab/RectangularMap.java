@@ -8,10 +8,4 @@ public class RectangularMap extends AbstractWorldMap{
         super(width, height);
         lowerLeft = new Vector2d(0,0);
     }
-
-    public String toString(){
-        MapVisualizer visualizer = new MapVisualizer(this);
-
-        return visualizer.draw(lowerLeft, upperRight);
-    }
 }

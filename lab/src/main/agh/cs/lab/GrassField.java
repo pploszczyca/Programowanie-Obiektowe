@@ -2,6 +2,7 @@ package agh.cs.lab;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class GrassField extends AbstractWorldMap {
@@ -24,13 +25,12 @@ public class GrassField extends AbstractWorldMap {
 
         for(int i = 0; i < grassAmount; i++) {
             endPoint = (int) Math.round(Math.sqrt(10 * grassAmount));
-            x = r.nextInt(endPoint);
-            y = r.nextInt(endPoint);
 
-            while (isOccupied(new Vector2d(x, y))) {
+            do{
                 x = r.nextInt(endPoint);
                 y = r.nextInt(endPoint);
-            }
+            }while (isOccupied(new Vector2d(x, y)));
+
 
             grassFields.add(new Grass(new Vector2d(x, y)));
         }
@@ -62,25 +62,22 @@ public class GrassField extends AbstractWorldMap {
         return false;
     }
 
+    @Override
+    protected Vector2d[] findCorners(){
+        Vector2d[] corners = super.findCorners();
 
-    public String toString(){
-        Vector2d cornerDownVector = new Vector2d(0,0);
-        Vector2d cornerUpVector = new Vector2d((int) Math.round(Math.sqrt(10*grassAmount)), (int) Math.round(Math.sqrt(10*grassAmount)));
-
-        for(Animal animal: animals){
-            cornerDownVector = cornerDownVector.lowerLeft(animal.getPosition());
-            cornerUpVector = cornerUpVector.upperRight(animal.getPosition());
+        for(Grass grassItem: grassFields){
+            corners[0] = corners[0].lowerLeft(grassItem.getPosition());
+            corners[1] = corners[1].upperRight(grassItem.getPosition());
         }
 
-        return visualizer.draw(cornerDownVector, cornerUpVector);
+        return corners;
     }
+
 
     public Vector2d getGrassItemPosition(int index){
         return grassFields.get(index).getPosition();
     }
 
-    public Vector2d getAnimalItemPosition(int index){
-        return animals.get(index).getPosition();
-    }
 
 }

@@ -1,9 +1,13 @@
 package agh.cs.lab;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Animal {
     private MapDirection direction;
     private Vector2d position;
     private IWorldMap map;
+    private final List<IPositionChangeObserver> animalObservers;
 
     public Animal(IWorldMap map){
         this(map, new Vector2d(2,2));
@@ -13,6 +17,7 @@ public class Animal {
         this.map = map;
         direction = MapDirection.NORTH;
         position = initialPosition;
+        animalObservers = new ArrayList<>();
     }
 
     @Override
@@ -41,12 +46,29 @@ public class Animal {
             else
                 newPosition = position.subtract(this.direction.toUnitVector());
 
-            if(map.canMoveTo(newPosition))
+            if(map.canMoveTo(newPosition)) {
+                positionChanged(position, newPosition);
                 position = newPosition;
+            }
         }
     }
 
     public Vector2d getPosition(){
         return position;
     }
+
+    protected void addObserver(IPositionChangeObserver observer){
+        animalObservers.add(observer);
+    }
+
+    protected void removeObserver(IPositionChangeObserver observer){
+        animalObservers.remove(observer);
+    }
+
+    protected void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+        for(IPositionChangeObserver observer: animalObservers){
+            observer.positionChanged(oldPosition, newPosition);
+        }
+    }
+
 }

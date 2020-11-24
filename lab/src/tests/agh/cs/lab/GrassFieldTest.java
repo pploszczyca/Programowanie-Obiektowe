@@ -40,17 +40,17 @@ public class GrassFieldTest {
         Animal animal = new Animal(field, new Vector2d(1,1));
         field.place(animal);
         field.run(parser.parse(new String[]{"b", "b"}));
-        Assert.assertTrue(field.getAnimalItemPosition(0).equals(new Vector2d(1,-1)));
-        Assert.assertFalse(field.getAnimalItemPosition(0).equals(new Vector2d(1,0)));
-        Assert.assertFalse(field.getAnimalItemPosition(0).equals(new Vector2d(1,3)));
+        Assert.assertTrue(field.objectAt(new Vector2d(1,-1)) instanceof Animal);
+        Assert.assertFalse(field.objectAt(new Vector2d(1,0)) instanceof Animal);
+        Assert.assertFalse(field.objectAt(new Vector2d(1,3)) instanceof Animal);
+
 
         field.place(new Animal(field, new Vector2d(1,0)));
-        field.run(parser.parse(new String[]{"f", "b", "f"}));
-        Assert.assertTrue(field.getAnimalItemPosition(0).equals(new Vector2d(1,-1)));
-        Assert.assertFalse(field.getAnimalItemPosition(0).equals(new Vector2d(1,1)));
-        Assert.assertTrue(field.getAnimalItemPosition(1).equals(new Vector2d(1,0)));
-        Assert.assertFalse(field.getAnimalItemPosition(1).equals(new Vector2d(1,-1)));
-
+        field.run(parser.parse(new String[]{"f", "b", "b", "f"}));
+        Assert.assertTrue(field.objectAt(new Vector2d(1,-2)) instanceof Animal);
+        Assert.assertTrue(field.objectAt(new Vector2d(1,1)) instanceof Animal);
+        Assert.assertFalse(field.objectAt(new Vector2d(1,-1)) instanceof Animal);
+        Assert.assertFalse(field.objectAt(new Vector2d(1,0)) instanceof Animal);
     }
 
     @Test

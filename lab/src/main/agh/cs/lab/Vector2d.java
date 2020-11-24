@@ -2,6 +2,8 @@ package agh.cs.lab;
 
 import org.junit.Test;
 
+import java.util.Objects;
+
 public class Vector2d {
     final int x;
     final int y;
@@ -51,6 +53,11 @@ public class Vector2d {
         else
             return false;
 
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 
     public Vector2d opposite() {
