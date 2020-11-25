@@ -19,7 +19,7 @@ public class GrassField extends AbstractWorldMap {
 
     }
 
-    public void placeRandomGrass(){
+    public void placeRandomGrass(){ // to nie powinno być publiczne
         Random r = new Random();
         int endPoint, x, y;
 

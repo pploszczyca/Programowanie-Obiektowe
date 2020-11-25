@@ -6,7 +6,7 @@ import java.util.List;
 public class Animal {
     private MapDirection direction;
     private Vector2d position;
-    private IWorldMap map;
+    private IWorldMap map;  // to pole może być finalne
     private final List<IPositionChangeObserver> animalObservers;
 
     public Animal(IWorldMap map){
@@ -47,7 +47,7 @@ public class Animal {
                 newPosition = position.subtract(this.direction.toUnitVector());
 
             if(map.canMoveTo(newPosition)) {
-                positionChanged(position, newPosition);
+                positionChanged(position, newPosition); // nazwa sugeruje, że pozycja już została zmieniona
                 position = newPosition;
             }
         }
@@ -57,7 +57,7 @@ public class Animal {
         return position;
     }
 
-    protected void addObserver(IPositionChangeObserver observer){
+    protected void addObserver(IPositionChangeObserver observer){   // to raczej public
         animalObservers.add(observer);
     }
 
@@ -65,7 +65,7 @@ public class Animal {
         animalObservers.remove(observer);
     }
 
-    protected void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+    protected void positionChanged(Vector2d oldPosition, Vector2d newPosition){ // a to zdecydowanie private
         for(IPositionChangeObserver observer: animalObservers){
             observer.positionChanged(oldPosition, newPosition);
         }

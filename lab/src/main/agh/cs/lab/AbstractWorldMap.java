@@ -4,12 +4,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
-    protected Map <Vector2d, Animal> animals;
+    protected Map <Vector2d, Animal> animals;   // to pole może być finalne
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
-    final protected MapVisualizer visualizer ;
+    final protected MapVisualizer visualizer ;  // wystarczy private
 
-    public AbstractWorldMap(int width, int height){
+    public AbstractWorldMap(int width, int height){ // jak się to ma do GrassField, które jest "nieskończone"?
         upperRight = new Vector2d(width, height);
         animals = new LinkedHashMap<>();
         visualizer = new MapVisualizer(this);
