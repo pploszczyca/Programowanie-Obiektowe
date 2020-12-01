@@ -28,6 +28,10 @@ public class OptionsParser {
                 moveArrIndex++;
             }
 
+            else{
+                throw new IllegalArgumentException(direction + " is not legal move specification");
+            }
+
         }
 
         return Arrays.copyOf(movesArr, moveArrIndex);

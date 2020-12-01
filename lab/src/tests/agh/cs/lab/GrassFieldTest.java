@@ -18,24 +18,27 @@ public class GrassFieldTest {
     @Test
     public void objectAtTest(){
         GrassField field = new GrassField(1);
-        for(int i = 0 ; i < 8; i++)
-            field.placeRandomGrass();
+        Animal animal;
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 4; j++){
+                animal = new Animal(field, new Vector2d(i,j));
+                field.place(animal);
+                Assert.assertEquals(field.objectAt(new Vector2d(i,j)), animal);
+            }
+        }
 
-        Animal animal = new Animal(field, new Vector2d(1,1));
-        field.place(animal);
-        Assert.assertEquals(field.objectAt(new Vector2d(1,1)), animal);
-        field.run(new MoveDirection[] {MoveDirection.FORWARD});
-        Assert.assertEquals(field.objectAt(new Vector2d(1,2)), animal);
-        Assert.assertTrue(field.objectAt(new Vector2d(1,1)) instanceof Grass);
-        Assert.assertFalse(field.objectAt(new Vector2d(1,2)) instanceof Grass);
+        GrassField secondField = new GrassField(10);
+        animal = new Animal(secondField, new Vector2d(1,1));
+        secondField.place(animal);
+        Assert.assertEquals(secondField.objectAt(new Vector2d(1,1)), animal);
+        secondField.run(new MoveDirection[] {MoveDirection.FORWARD});
+        Assert.assertEquals(secondField.objectAt(new Vector2d(1,2)), animal);
     }
 
     @Test
     public void canMoveToTest(){
         GrassField field = new GrassField(1);
         OptionsParser parser = new OptionsParser();
-        for(int i = 0 ; i < 8; i++)
-            field.placeRandomGrass();
 
         Animal animal = new Animal(field, new Vector2d(1,1));
         field.place(animal);
@@ -55,17 +58,32 @@ public class GrassFieldTest {
 
     @Test
     public void isOccupiedTest(){
-        GrassField field = new GrassField(1);
-        OptionsParser parser = new OptionsParser();
-        for(int i = 0 ; i < 8; i++)
-            field.placeRandomGrass();
+        GrassField field = new GrassField(0);
 
+        field.place(new Animal(field, new Vector2d(1,1)));
         Assert.assertTrue(field.isOccupied(new Vector2d(1,1)));
+        field.place(new Animal(field, new Vector2d(0,0)));
         Assert.assertTrue(field.isOccupied(new Vector2d(0,0)));
         Assert.assertFalse(field.isOccupied(new Vector2d(-2,-2)));
 
         field.place(new Animal(field, new Vector2d(-2,-2)));
         Assert.assertTrue(field.isOccupied(new Vector2d(-2,-2)));
 
+    }
+
+    @Test
+    public void findCornersTest(){
+        GrassField field = new GrassField(0);
+        field.place(new Animal(field, new Vector2d(0,0)));
+        field.place(new Animal(field, new Vector2d(1,1)));
+        field.place(new Animal(field, new Vector2d(2,2)));
+
+        Assert.assertArrayEquals(field.findCorners(), new Vector2d[] {new Vector2d(0,0), new Vector2d(2,2)});
+
+        field.run(new MoveDirection[]{MoveDirection.FORWARD, MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.FORWARD});
+        Assert.assertArrayEquals(field.findCorners(), new Vector2d[] {new Vector2d(0,2), new Vector2d(2,2)});
+
+        field.run(new MoveDirection[]{MoveDirection.FORWARD, MoveDirection.BACKWARD, MoveDirection.FORWARD});
+        Assert.assertArrayEquals(field.findCorners(), new Vector2d[] {new Vector2d(0,1), new Vector2d(3,3)});
     }
 }

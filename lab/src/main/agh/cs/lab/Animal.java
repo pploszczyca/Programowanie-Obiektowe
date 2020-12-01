@@ -3,10 +3,10 @@ package agh.cs.lab;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Animal {
+public class Animal implements IMapElement{
     private MapDirection direction;
     private Vector2d position;
-    private IWorldMap map;
+    private final IWorldMap map;
     private final List<IPositionChangeObserver> animalObservers;
 
     public Animal(IWorldMap map){
@@ -47,8 +47,9 @@ public class Animal {
                 newPosition = position.subtract(this.direction.toUnitVector());
 
             if(map.canMoveTo(newPosition)) {
-                positionChanged(position, newPosition);
+                Vector2d oldPosition = position;
                 position = newPosition;
+                positionChanged(oldPosition, newPosition);
             }
         }
     }
@@ -57,7 +58,7 @@ public class Animal {
         return position;
     }
 
-    protected void addObserver(IPositionChangeObserver observer){
+    public void addObserver(IPositionChangeObserver observer){
         animalObservers.add(observer);
     }
 
@@ -65,7 +66,7 @@ public class Animal {
         animalObservers.remove(observer);
     }
 
-    protected void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+    private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         for(IPositionChangeObserver observer: animalObservers){
             observer.positionChanged(oldPosition, newPosition);
         }

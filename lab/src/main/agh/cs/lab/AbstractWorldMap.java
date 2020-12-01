@@ -4,13 +4,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
-    protected Map <Vector2d, Animal> animals;
+    final protected Map <Vector2d, Animal> animals;
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
-    final protected MapVisualizer visualizer ;
+    final private MapVisualizer visualizer ;
 
-    public AbstractWorldMap(int width, int height){
-        upperRight = new Vector2d(width, height);
+    public AbstractWorldMap(){
         animals = new LinkedHashMap<>();
         visualizer = new MapVisualizer(this);
     }
@@ -31,15 +30,17 @@ abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     public void run(MoveDirection[] directions) {
         int n = animals.size();
         Animal animalsFromMap[] = animals.values().toArray(new Animal[animals.size()]);
-        for(int i = 0; i < directions.length; i++){
-            animalsFromMap[i%n].move(directions[i]);
+        for (int i = 0; i < directions.length; i++) {
+            animalsFromMap[i % n].move(directions[i]);
         }
+
     }
 
     @Override
     public boolean place(Animal animal) {
-        if(!canMoveTo(animal.getPosition()))
-            return false;
+        if(!canMoveTo(animal.getPosition())) {
+            throw new IllegalArgumentException("Position " + animal.getPosition().toString() + " is incorrect or currently occupied");
+        }
 
         animal.addObserver(this);
         animals.put(animal.getPosition(), animal);

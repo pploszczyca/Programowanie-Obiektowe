@@ -7,7 +7,7 @@ public class AnimalTest {
 
     @Test
     public void moveTest(){
-        Animal animal = new Animal(new RectangularMap(4,4));
+        Animal animal = new Animal(new RectangularMap(5,5));
 
         animal.move(MoveDirection.RIGHT);
         Assert.assertEquals(animal.toString(), "E");

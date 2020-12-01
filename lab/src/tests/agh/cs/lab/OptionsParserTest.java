@@ -11,8 +11,10 @@ public class OptionsParserTest {
         Assert.assertArrayEquals(new OptionsParser().parse(inputDirectionArr), outputDirectionArr);
 
         String [] arrWithWrongDir = {"f", "to nie jest kierunek", "r", "coś", "left"};
-        MoveDirection [] outputArrWithWrongDir = {MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.LEFT};
-        Assert.assertArrayEquals(new OptionsParser().parse(arrWithWrongDir), outputArrWithWrongDir);
+
+        Assert.assertThrows("to nie jest kierunek is not legal move specification", IllegalArgumentException.class, ()->{
+            new OptionsParser().parse(arrWithWrongDir);
+        });
 
     }
 

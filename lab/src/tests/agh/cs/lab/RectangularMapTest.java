@@ -7,7 +7,7 @@ public class RectangularMapTest {
 
     @Test
     public void runTest(){
-        IWorldMap map = new RectangularMap(10, 5);
+        IWorldMap map = new RectangularMap(11, 6);
         OptionsParser parser = new OptionsParser();
         map.place(new Animal(map));     // First Animal
         map.place(new Animal(map,new Vector2d(3,4)));          //Second Animal
@@ -41,7 +41,7 @@ public class RectangularMapTest {
 
     @Test
     public void canMoveToTest(){
-        RectangularMap map = new RectangularMap(5,5);
+        RectangularMap map = new RectangularMap(6,6);
         Assert.assertFalse(map.canMoveTo(new Vector2d(-1,-1)));
         Assert.assertFalse(map.canMoveTo(new Vector2d(5,6)));
         Assert.assertTrue(map.canMoveTo(new Vector2d(0,0)));
@@ -69,13 +69,21 @@ public class RectangularMapTest {
 
     @Test
     public void placeTest(){
-        RectangularMap map = new RectangularMap(5,5);
+        RectangularMap map = new RectangularMap(6,6);
         Assert.assertTrue(map.place(new Animal(map, new Vector2d(3,3))));
-        Assert.assertFalse(map.place(new Animal(map, new Vector2d(3,3))));
+        Assert.assertThrows("Position (3,3) is incorrect or currently occupied", IllegalArgumentException.class, ()->{
+            map.place(new Animal(map, new Vector2d(3,3)));
+        });
         Assert.assertTrue(map.place(new Animal(map)));
-        Assert.assertFalse(map.place(new Animal(map)));
-        Assert.assertFalse(map.place(new Animal(map, new Vector2d(6,5))));
-        Assert.assertFalse(map.place(new Animal(map, new Vector2d(-1,0))));
+        Assert.assertThrows("Position (2,2) is incorrect or currently occupied", IllegalArgumentException.class, ()->{
+            map.place(new Animal(map));
+        });
+        Assert.assertThrows("Position (6,5) is incorrect or currently occupied", IllegalArgumentException.class, ()->{
+            map.place(new Animal(map, new Vector2d(6,5)));
+        });
+        Assert.assertThrows("Position (-1,0) is incorrect or currently occupied", IllegalArgumentException.class, ()->{
+            map.place(new Animal(map, new Vector2d(-1,0)));
+        });
     }
 
     @Test

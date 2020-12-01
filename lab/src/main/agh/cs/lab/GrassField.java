@@ -8,18 +8,21 @@ import java.util.Random;
 public class GrassField extends AbstractWorldMap {
     private int grassAmount;
     private final List<Grass> grassFields;
+    private final MapBoundary boundary;
 
     public GrassField(int grassAmount){
-        super(Integer.MAX_VALUE,Integer.MAX_VALUE);
+        super();
         lowerLeft = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        upperRight = new Vector2d(Integer.MAX_VALUE,Integer.MAX_VALUE);
         grassFields = new ArrayList<>();
         this.grassAmount = grassAmount;
+        boundary = new MapBoundary();
 
         placeRandomGrass();
 
     }
 
-    public void placeRandomGrass(){
+    private void placeRandomGrass(){
         Random r = new Random();
         int endPoint, x, y;
 
@@ -31,8 +34,9 @@ public class GrassField extends AbstractWorldMap {
                 y = r.nextInt(endPoint);
             }while (isOccupied(new Vector2d(x, y)));
 
-
-            grassFields.add(new Grass(new Vector2d(x, y)));
+            Grass grass = new Grass(new Vector2d(x, y));
+            grassFields.add(grass);
+            boundary.addMapElement(grass);
         }
     }
 
@@ -51,6 +55,16 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
+    public boolean place(Animal animal) {
+        if(super.place(animal)){
+            animal.addObserver(boundary);
+            boundary.addMapElement(animal);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean canMoveTo(Vector2d position) {
         return position.follows(lowerLeft) && position.precedes(upperRight) && !super.isOccupied(position);
     }
@@ -64,14 +78,7 @@ public class GrassField extends AbstractWorldMap {
 
     @Override
     protected Vector2d[] findCorners(){
-        Vector2d[] corners = super.findCorners();
-
-        for(Grass grassItem: grassFields){
-            corners[0] = corners[0].lowerLeft(grassItem.getPosition());
-            corners[1] = corners[1].upperRight(grassItem.getPosition());
-        }
-
-        return corners;
+        return boundary.findCorners();
     }
 
 

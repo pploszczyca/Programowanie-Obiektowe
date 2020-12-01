@@ -2,9 +2,10 @@ package agh.cs.lab;
 
 import org.junit.Test;
 
+import java.util.Comparator;
 import java.util.Objects;
 
-public class Vector2d {
+public class Vector2d{
     final int x;
     final int y;
 
