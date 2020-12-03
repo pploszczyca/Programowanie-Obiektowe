@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 public class MapBoundary implements IPositionChangeObserver{
-    final private TreeSet<IMapElement> sortedArrayX;
+    final private TreeSet<IMapElement> sortedArrayX;    // myląca nazwa
     final private TreeSet<IMapElement> sortedArrayY;
 
     public MapBoundary(){
@@ -27,7 +27,7 @@ public class MapBoundary implements IPositionChangeObserver{
 
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
-        for(Iterator<IMapElement> iterator = sortedArrayX.iterator(); iterator.hasNext();){
+        for(Iterator<IMapElement> iterator = sortedArrayX.iterator(); iterator.hasNext();){ // liniowe przeszukiwanie posortowanego zbioru?
             IMapElement element = iterator.next();
             if(element.getPosition().equals(newPosition) && element instanceof Animal){
                 iterator.remove();
