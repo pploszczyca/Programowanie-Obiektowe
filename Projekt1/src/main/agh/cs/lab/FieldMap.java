@@ -44,7 +44,7 @@ class FieldMap implements IWorldMap, IPositionChangeObserver{
         return objectAt(position) instanceof FieldMapCell;
     }
 
-    private boolean isOccupiedByGrass(Vector2d position){
+    public boolean isOccupiedByGrass(Vector2d position){
         return grassFields.get(position) instanceof Grass;
     }
 

@@ -85,4 +85,66 @@ public class FieldMapTest {
         }
     }
 
+    private int[] countGrasses(FieldMap map, Vector2d jungleLowerLeft, Vector2d jungleUpperRight, int width, int height){
+       Vector2d position;
+       int grassesInJungle = 0, grassesOutsideJungle = 0;
+
+        for(int x =0; x < width; x++){
+            for(int y=0; y < height; y++){
+                position = new Vector2d(x,y);
+                if(map.isOccupiedByGrass(position)) {
+                    if (position.follows(jungleLowerLeft) && position.precedes(jungleUpperRight)){
+                        grassesInJungle++;
+                    }
+                    else {
+                        grassesOutsideJungle++;
+                    }
+                }
+            }
+        }
+
+        return new int[]{grassesInJungle, grassesOutsideJungle};
+    }
+
+    @Test
+    public void putGrassesTest(){
+        Vector2d jungleLowerLeft =  new Vector2d(1,1);
+        Vector2d jungleUpperRight = new Vector2d(1,2);
+        int width = 5, height = 5;
+        int grassesInJungle, grassesOutsideJungle;
+
+        FieldMap map = new FieldMap(width,height,jungleLowerLeft,jungleUpperRight, 20, 5, 3);
+
+        map.putGrasses();
+        Assert.assertArrayEquals(countGrasses(map, jungleLowerLeft, jungleUpperRight, width, height), new int[]{1,1});
+
+        map.putGrasses();
+        Assert.assertArrayEquals(countGrasses(map, jungleLowerLeft, jungleUpperRight, width, height), new int[]{2,2});
+
+        for(int i =0; i < 5; i++){
+            map.putGrasses();
+        }
+
+        Assert.assertArrayEquals(countGrasses(map, jungleLowerLeft, jungleUpperRight, width, height), new int[]{2,7});
+
+
+        // second test
+        jungleLowerLeft =  new Vector2d(1,1);
+        jungleUpperRight = new Vector2d(1,1);
+        FieldMap otherMap = new FieldMap(width,height,jungleLowerLeft,jungleUpperRight, 20, 5, 3);
+
+        otherMap.place(new Animal(map, jungleLowerLeft));
+
+        otherMap.putGrasses();
+        otherMap.run();
+        Assert.assertArrayEquals(countGrasses(otherMap, jungleLowerLeft, jungleUpperRight, width, height), new int[]{0,1});
+
+        otherMap.putGrasses();
+        Assert.assertArrayEquals(countGrasses(otherMap, jungleLowerLeft, jungleUpperRight, width, height), new int[]{1,2});
+
+
+
+
+    }
+
 }
