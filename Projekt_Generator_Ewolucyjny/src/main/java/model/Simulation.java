@@ -3,6 +3,7 @@ package model;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.scene.layout.Pane;
+import statistics.MapStatistics;
 
 import java.io.Reader;
 import java.nio.file.Files;
@@ -20,6 +21,7 @@ public class Simulation {
     private float plantEnergy;
     private int randomAnimals;
     private Pane world;
+    private MapStatistics statistics;
 
     public Simulation(int width, int height, int jungleWidth, int jungleHeight , int startEnergy, int moveEnergy, float plantEnergy, int randomAnimals, Pane world){
         this.width = width;
@@ -41,7 +43,8 @@ public class Simulation {
     }
 
     private void initializeMap(){
-        map = new FieldMap(width, height, calculateJungleLowerLeft(width,height,jungleWidth, jungleHeight), calculateJungleUpperRight(width,height,jungleWidth, jungleHeight), startEnergy, moveEnergy, plantEnergy, world);
+        map = new FieldMap(width, height, calculateJungleLowerLeft(width,height,jungleWidth, jungleHeight), calculateJungleUpperRight(width,height,jungleWidth, jungleHeight), startEnergy, moveEnergy, plantEnergy, this);
+        statistics = new MapStatistics(map);
         map.randomPlace(randomAnimals);
     }
 
@@ -79,6 +82,18 @@ public class Simulation {
         map.eat();
         map.multiplication();
         map.putGrasses();
+    }
+
+    public MapStatistics getStatistics(){
+        return statistics;
+    }
+
+    public Pane getPane(){
+        return world;
+    }
+
+    public int getEra(){
+        return statistics.getEraCounter();
     }
 
 

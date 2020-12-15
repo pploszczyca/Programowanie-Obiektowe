@@ -1,5 +1,7 @@
 package model;
 
+import statistics.MapStatistics;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -7,9 +9,11 @@ import java.util.List;
 
 public class FieldMapCell implements IPositionChangeObserver{
     private List<Animal> animals;
+    private MapStatistics statistics;
 
-    public FieldMapCell(Animal animal){
+    public FieldMapCell(Animal animal, Simulation simulation){
         animals = new ArrayList<>();
+        statistics = simulation.getStatistics();
         this.add(animal);
     }
 
@@ -27,18 +31,23 @@ public class FieldMapCell implements IPositionChangeObserver{
         return null;
     }
 
-    public void removeWithLowEnergy(){
+    public int removeWithLowEnergy(){
         Iterator<Animal> iterator = animals.iterator();
         Animal animal;
+        int animalsRemoved = 0;
 
         while(iterator.hasNext()){
             animal = iterator.next();
 
             if(animal.getEnergy()<=0){
                 animal.removeDrawn();
+                statistics.addDeathAnimal(statistics.getEraCounter()-animal.getBirthday());
                 iterator.remove();
+                animalsRemoved++;
             }
         }
+
+        return animalsRemoved;
     }
 
     public Animal removeAnimal(Vector2d position){
@@ -120,6 +129,26 @@ public class FieldMapCell implements IPositionChangeObserver{
 
     public int getAnimalsAmount(){
         return animals.size();
+    }
+
+    public float sumAnimalsEnergy(){
+        float sum = 0;
+
+        for(Animal animal: animals){
+            sum += animal.getEnergy();
+        }
+
+        return sum;
+    }
+
+    public int getAnimalsChildrenAmount(){
+        int sum = 0;
+
+        for(Animal animal: animals){
+            sum += animal.getChildrenAmount();
+        }
+
+        return sum;
     }
 
 }

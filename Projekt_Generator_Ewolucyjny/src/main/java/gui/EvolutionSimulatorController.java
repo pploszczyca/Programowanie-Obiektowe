@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import model.Simulation;
+import statistics.MapStatistics;
 
 
 public class EvolutionSimulatorController {
@@ -15,9 +16,27 @@ public class EvolutionSimulatorController {
     @FXML
     Label eraText;
 
+    @FXML
+    Label animalsOnMap;
+
+    @FXML
+    Label plantsOnMap;
+
+    @FXML
+    Label mostPopularGen;
+
+    @FXML
+    Label averageEnergy;
+
+    @FXML
+    Label averageAge;
+
+    @FXML
+    Label averageAmountOfChildren;
+
 
     private Simulation simulation;
-    private int eraCounter;
+    private MapStatistics statistics;
 
     private DayTime clock;
 
@@ -40,18 +59,29 @@ public class EvolutionSimulatorController {
     @FXML
     public void initialize(){
         clock = new DayTime();
-//        simulation = new Simulation(15,15,9,9, 20, 1, 10, 30, world);
         simulation = new Simulation(world);
-        eraCounter = 1;
-        eraText.setText("Epoka: " + eraCounter);
+        statistics = simulation.getStatistics();
+        updateStatistics();
+    }
+
+    private void updateStatistics(){
+        eraText.setText("Epoka: " + String.valueOf(statistics.getEraCounter()));
+        animalsOnMap.setText(String.valueOf(statistics.getAnimalsOnMap()));
+        plantsOnMap.setText(String.valueOf(statistics.getPlantsOnMap()));
+        mostPopularGen.setText(statistics.getMostPopularGen());
+        averageEnergy.setText(String.valueOf(statistics.getAverageEnergy()));
+        averageAge.setText(String.valueOf(statistics.getAverageAge()));
+        averageAmountOfChildren.setText(String.valueOf(statistics.getAverageAmountOfChildren()));
+
 
     }
 
     @FXML
     public void step(){
         simulation.daySimulate();
-        eraCounter++;
-        eraText.setText("Epoka: " + eraCounter);
+        statistics.increaseEraCounter();
+
+        updateStatistics();
     }
 
     @FXML

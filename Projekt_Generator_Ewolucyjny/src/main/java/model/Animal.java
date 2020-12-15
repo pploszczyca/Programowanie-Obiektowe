@@ -14,12 +14,8 @@ public class Animal extends AbstractMapElement{
     private float energy;
     private AnimalGenes genes;
     private final List<Animal> children;
+    private int birthday;
 
-
-
-    public Animal(IWorldMap map){
-        this(map, map.getStartEnergy());
-    }
 
     public Animal(IWorldMap map, Vector2d initialPosition){
         this(map, map.getStartEnergy(), initialPosition);
@@ -33,8 +29,8 @@ public class Animal extends AbstractMapElement{
         this(map, startEnergy, initialPosition, new AnimalGenes());
     }
 
-    public Animal(IWorldMap map, float startEnergy, Vector2d initialPosition, Pane world){
-        this(map, startEnergy, initialPosition, new AnimalGenes(), world);
+    public Animal(IWorldMap map, float startEnergy, Vector2d initialPosition, Pane world, int era){
+        this(map, startEnergy, initialPosition, new AnimalGenes(), world, era);
     }
 
     public Animal(IWorldMap map, float startEnergy, Vector2d initialPosition, AnimalGenes genes) {
@@ -62,23 +58,27 @@ public class Animal extends AbstractMapElement{
 
     }
 
+    public Animal(IWorldMap map, float startEnergy, Vector2d initialPosition, AnimalGenes genes, Pane world, int birthday) {
+        super(initialPosition, world);
+        this.map = map;
+        direction = MapDirection.NORTH.randomDirection();
+        animalObservers = new ArrayList<>();
+        this.genes = genes;
+        energy = startEnergy;
+        children = new ArrayList<>();
+        position = initialPosition;
+        addObserver(drawing);
+        drawElement();
+        this.birthday = birthday;
+    }
 
 
     @Override
     public String toString(){
-        switch (direction){
-            case NORTH: return "N";
-            case NORTH_WEST: return "NW";
-            case NORTH_EAST: return "NE";
-            case EAST: return "E";
-            case SOUTH: return "S";
-            case SOUTH_EAST: return "SE";
-            case SOUTH_WEST: return "SW";
-            case WEST: return "W";
-        }
-
-        throw new IllegalArgumentException();
+        return genes.toString();
     }
+
+
 
     public void move(){
         energy = energy - map.getMoveEnergy();
@@ -128,8 +128,16 @@ public class Animal extends AbstractMapElement{
         children.add(animal);
     }
 
+    public int getChildrenAmount(){
+        return children.size();
+    }
+
     public int[] getGenes(int startIndex, int endIndex){
         return genes.getGenesElements(startIndex, endIndex);
+    }
+
+    public int[] getGenes(){
+        return getGenes(0,31);
     }
 
     public boolean equals(Object other) {
@@ -159,4 +167,7 @@ public class Animal extends AbstractMapElement{
         }
     }
 
+    public int getBirthday() {
+        return birthday;
+    }
 }

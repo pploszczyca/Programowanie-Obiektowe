@@ -14,7 +14,7 @@ abstract public class AbstractMapElement{
 
     AbstractMapElement(Vector2d position, Pane world){
         this(position);
-        drawing = new Drawing(world);
+        drawing = new Drawing(world, this);
     }
 
     public void drawElement(){

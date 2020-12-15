@@ -17,7 +17,7 @@
          </font></Label>
    </top>
    <center>
-      <Pane fx:id="world" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <Pane fx:id="world" prefHeight="716.0" prefWidth="1018.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
@@ -26,7 +26,6 @@
    <bottom>
       <VBox prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="eraText" prefHeight="16.0" prefWidth="1203.0" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#start" text="Start" />
@@ -37,4 +36,48 @@
          </children>
       </VBox>
    </bottom>
+   <right>
+      <VBox prefHeight="726.0" prefWidth="375.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label contentDisplay="CENTER" text="Statystyki">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <Label fx:id="eraText" prefHeight="16.0" prefWidth="1203.0" />
+            <HBox prefHeight="23.0" prefWidth="215.0">
+               <children>
+                  <Label text="Liczba wszystkich zwierząt: " />
+                  <Label fx:id="animalsOnMap" text="0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="23.0" prefWidth="215.0">
+               <children>
+                  <Label text="Liczba wszystkich roślin: " />
+                  <Label fx:id="plantsOnMap" text="0" />
+               </children>
+            </HBox>
+            <Label text="Dominujący genotyp: " />
+            <Label fx:id="mostPopularGen" text="0" />
+            <HBox prefHeight="23.0" prefWidth="215.0">
+               <children>
+                  <Label text="Średni poziom energii dla żyjących zwierząt: " />
+                  <Label fx:id="averageEnergy" text="0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="23.0" prefWidth="215.0">
+               <children>
+                  <Label text="Średnia długość życia martwych zwierząt: " />
+                  <Label fx:id="averageAge" text="0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="23.0" prefWidth="215.0">
+               <children>
+                  <Label text="Średnia liczba dzieci dla żyjących zwierząt: " />
+                  <Label fx:id="averageAmountOfChildren" text="0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </right>
 </BorderPane>

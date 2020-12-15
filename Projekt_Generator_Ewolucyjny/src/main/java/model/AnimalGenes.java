@@ -78,4 +78,15 @@ public class AnimalGenes {
         return Arrays.copyOfRange(genes, startIndex, endIndex+1);
     }
 
+    @Override
+    public String toString(){
+        StringBuilder gen = new StringBuilder();
+
+        for(int i: genes){
+            gen.append(i);
+        }
+
+        return gen.toString();
+    }
+
 }

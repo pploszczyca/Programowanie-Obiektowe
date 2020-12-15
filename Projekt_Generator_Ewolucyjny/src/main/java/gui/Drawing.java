@@ -1,9 +1,13 @@
 package gui;
 
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import model.AbstractMapElement;
+import model.Animal;
 import model.IPositionChangeObserver;
 import model.Vector2d;
 import javafx.scene.shape.Rectangle;
+
 
 public class Drawing implements IPositionChangeObserver {
     private final int sizeFactor;
@@ -19,6 +23,13 @@ public class Drawing implements IPositionChangeObserver {
         sizeFactor = 50;
         this.world = world;
         rectangle = new Rectangle();
+    }
+
+    public Drawing(Pane world, AbstractMapElement mapElement){
+        this(world);
+        if(mapElement instanceof Animal) {
+            rectangle.addEventHandler(MouseEvent.MOUSE_CLICKED, new AnimalEventHandler((Animal) mapElement));
+        }
     }
 
 

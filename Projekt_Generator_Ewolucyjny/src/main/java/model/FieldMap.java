@@ -20,6 +20,8 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
     private Pane world;
     private Drawing fieldDrawing;
     private Drawing jungleDrawing;
+    private int aliveAnimals;
+    private Simulation simulation;
 
     public FieldMap(int width, int height, Vector2d jungleLowerLeft, Vector2d jungleUpperRight, int startEnergy, int moveEnergy, float plantEnergy){
         lowerLeft = new Vector2d(0,0);
@@ -32,6 +34,7 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
         this.startEnergy = startEnergy;
         this.moveEnergy = moveEnergy;
         this.plantEnergy = plantEnergy;
+        aliveAnimals = 0;
         this.world = new Pane();
 
         if(jungleLowerLeft.follows(jungleUpperRight.add(new Vector2d(1,1))) || jungleUpperRight.x >= width || jungleUpperRight.y >= height){
@@ -40,14 +43,15 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
 
     }
 
-    public FieldMap(int width, int height, Vector2d jungleLowerLeft, Vector2d jungleUpperRight, int startEnergy, int moveEnergy, float plantEnergy, Pane world){
+    public FieldMap(int width, int height, Vector2d jungleLowerLeft, Vector2d jungleUpperRight, int startEnergy, int moveEnergy, float plantEnergy, Simulation simulation){
         this(width, height, jungleLowerLeft, jungleUpperRight, startEnergy, moveEnergy, plantEnergy);
-        this.world =world;
+        this.world = simulation.getPane();
         fieldDrawing = new Drawing(world, MapColors.FIELD);
         fieldDrawing.drawRectangle(lowerLeft, upperRight);
 
         jungleDrawing = new Drawing(world, MapColors.JUNGLE);
         jungleDrawing.drawRectangle(jungleLowerLeft, jungleUpperRight);
+        this.simulation = simulation;
 
     }
 
@@ -118,14 +122,12 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
         grassFields.put(position, new Grass(position, world));
     }
 
-
-
     public void putGrasses(){
         randGrassInJungle();
         randGrassOutsideJungle();
     }
 
-    private List<Animal> makeListOfAllAnimals(){
+    public List<Animal> makeListOfAllAnimals(){
         List<Animal> allAnimals = new ArrayList<>();
 
         for(Map.Entry<Vector2d, FieldMapCell> entry: animals.entrySet()){
@@ -179,8 +181,6 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
 
     @Override
     public void run() {
-//        System.out.println(animals.entrySet());
-
         List<Animal> allAnimals = makeListOfAllAnimals();
 
         for(Animal animal: allAnimals){
@@ -188,9 +188,6 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
         }
 
         removeEmptyCells();
-//        System.out.println(animals.entrySet());
-//        System.out.println(animals.size());
-
     }
 
     public void randomPlace(int animalsAmount){
@@ -202,7 +199,7 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
         for(int i = 0; i < animalsAmount; i++){
             position = randomAnimalPosition();
 
-            Animal animal = new Animal(this, startEnergy,position, world);
+            Animal animal = new Animal(this, startEnergy,position, world, simulation.getEra());
             place(animal);
         }
     }
@@ -215,18 +212,18 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
                 grassFields.remove(entry.getKey());
             }
         }
-//        System.out.println(grassFields.size());
     }
 
     @Override
     public boolean place(Animal animal) {
         animal.addObserver(this);
+        aliveAnimals++;
 
         if(isOccupiedByAnimal(animal.getPosition())){
             animals.get(animal.getPosition()).add(animal);
         }
         else{
-            animals.put(animal.getPosition(), new FieldMapCell(animal));
+            animals.put(animal.getPosition(), new FieldMapCell(animal, simulation));
         }
 
         return true;
@@ -243,10 +240,9 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
                 parents = entry.getValue().findTwoMax();
                 if (parents.canBeParents()) {
                     Vector2d childPosition = findFreePosition(parents.getPairPosition());
-                    Animal childAnimal = new Animal(this, parents.getForChildEnergy(), childPosition, parents.mixParentsGenes(), world);
+                    Animal childAnimal = new Animal(this, parents.getForChildEnergy(), childPosition, parents.mixParentsGenes(), world, simulation.getEra());
                     newChildren.add(childAnimal);
                     parents.addChild(childAnimal);
-//                    System.out.println("NEW CHILD " + parents.getPairPosition());
                 }
             }
 
@@ -278,7 +274,7 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
 
     public void removeAnimalsWithLowEnergy(){
         for(Map.Entry<Vector2d, FieldMapCell> entry: animals.entrySet()){
-            entry.getValue().removeWithLowEnergy();
+            aliveAnimals -= entry.getValue().removeWithLowEnergy();
         }
 
         removeEmptyCells();
@@ -290,7 +286,7 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
         Animal animal = animalsCell.getAnimal(newPosition);
 
         if(isOccupiedByAnimal(newPosition)) {animals.get(newPosition).add(animal);}
-        else    {animals.put(newPosition, new FieldMapCell(animal));}
+        else    {animals.put(newPosition, new FieldMapCell(animal, simulation));}
     }
 
     @Override
@@ -313,25 +309,31 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
         return startEnergy;
     }
 
-    public Vector2d getJungleLowerLeft() {
-        return jungleLowerLeft;
-    }
-
-    public Vector2d getJungleUpperRight() {
-        return jungleUpperRight;
-    }
-
     public int getAmountAliveAnimals(){
-        int animalsAmount = 0;
-
-        for(Map.Entry<Vector2d, FieldMapCell> entry: animals.entrySet()){
-            animalsAmount += entry.getValue().getAnimalsAmount();
-        }
-
-        return animalsAmount;
+        return aliveAnimals;
     }
 
     public int getGrassAmount(){
         return grassFields.size();
+    }
+
+    public float sumAnimalsEnergy(){
+        float sum = 0;
+
+        for(Map.Entry<Vector2d, FieldMapCell> entry: animals.entrySet()){
+            sum += entry.getValue().sumAnimalsEnergy();
+        }
+
+        return sum;
+    }
+
+    public int getAnimalsChildrenAmount(){
+        int sum = 0;
+
+        for(Map.Entry<Vector2d, FieldMapCell> entry: animals.entrySet()){
+            sum += entry.getValue().getAnimalsChildrenAmount();
+        }
+
+        return sum;
     }
 }
