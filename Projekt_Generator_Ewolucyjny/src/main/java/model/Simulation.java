@@ -2,7 +2,10 @@ package model;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import gui.Drawing;
 import gui.EvolutionSimulatorController;
+import gui.InformationWindow;
+import gui.MapColors;
 import javafx.scene.layout.Pane;
 import statistics.MapStatistics;
 
@@ -23,6 +26,8 @@ public class Simulation {
     private int randomAnimals;
     private Pane world;
     private MapStatistics statistics;
+    private EvolutionSimulatorController controller;
+    private AnimalTrackerObserver trackerObserver;
 
     public Simulation(int width, int height, int jungleWidth, int jungleHeight , int startEnergy, int moveEnergy, int plantEnergy, int randomAnimals, Pane world){
         this.width = width;
@@ -38,10 +43,11 @@ public class Simulation {
 
     }
 
-    public Simulation(Pane world){
+    public Simulation(Pane world, EvolutionSimulatorController controller){
         this.world = world;
         loadDataFromFile();
         initializeMap();
+        this.controller = controller;
     }
 
     private void initializeMap(){
@@ -112,5 +118,28 @@ public class Simulation {
 
     public FieldMap getMap(){
         return map;
+    }
+
+    public void highlightAnimalsWithPopularGen(){
+        new Drawing(world, 0).highlightAnimalsWithPopularGen(map.makeListOfAllAnimals(), getStatistics().getMostPopularGen());
+    }
+
+    public EvolutionSimulatorController getController() {
+        return controller;
+    }
+
+    public void startAnimalObservation(Animal animal){
+        trackerObserver = new AnimalTrackerObserver(animal, getEra());
+    }
+
+    public void popUpInformation(){
+        InformationWindow window = new InformationWindow();
+        window.setWindowView(world.getScene().getWindow());
+        window.show();
+        window.setText(trackerObserver.toString());
+    }
+
+    public int calculateSizeFactor(){
+        return (int) Math.min(Math.round(800/width), Math.round(800/height));
     }
 }

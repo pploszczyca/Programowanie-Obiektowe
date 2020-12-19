@@ -8,7 +8,8 @@ public enum MapColors {
     GRASS(Color.rgb(0,255,0)),
     ANIMAL_MAX_ENERGY(Color.rgb(255,128,0)),
     ANIMAL_MIDDLE_ENERGY(Color.rgb(153,76,0)),
-    ANIMAL_LOW_ENERGY(Color.rgb(51,25,0));
+    ANIMAL_LOW_ENERGY(Color.rgb(51,25,0)),
+    ANIMAL_WITH_POPULAR_GEN(Color.rgb(0,0,255));
 
     Color color;
 

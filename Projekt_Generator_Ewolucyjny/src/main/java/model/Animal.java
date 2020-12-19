@@ -1,5 +1,6 @@
 package model;
 
+import gui.EvolutionSimulatorController;
 import gui.MapColors;
 import javafx.scene.layout.Pane;
 
@@ -15,6 +16,8 @@ public class Animal extends AbstractMapElement{
     private AnimalGenes genes;
     private final List<Animal> children;
     private int birthday;
+    private int deathDay;
+    private AnimalTrackerObserver trackerObserver;
 
     public Animal(FieldMap map, float startEnergy, Vector2d initialPosition, int birthday){
         this(map, startEnergy, initialPosition, new AnimalGenes(), map.getPane(), birthday);
@@ -22,7 +25,7 @@ public class Animal extends AbstractMapElement{
 
 
     public Animal(FieldMap map, float startEnergy, Vector2d initialPosition, AnimalGenes genes, Pane world, int birthday) {
-        super(initialPosition, world);
+        super(initialPosition, world, map.getSimulation().calculateSizeFactor());
         this.map = map;
         direction = MapDirection.NORTH.randomDirection();
         animalObservers = new ArrayList<>();
@@ -33,6 +36,8 @@ public class Animal extends AbstractMapElement{
         addObserver(drawing);
         drawElement();
         this.birthday = birthday;
+        deathDay = 0;
+        trackerObserver = null;
     }
 
 
@@ -90,10 +95,19 @@ public class Animal extends AbstractMapElement{
 
     public void addChild(Animal animal){
         children.add(animal);
+
+        if(trackerObserver != null){
+            trackerObserver.addAnimal(animal);
+            animal.setAnimalTrackerObserver(trackerObserver);
+        }
     }
 
     public int getChildrenAmount(){
         return children.size();
+    }
+
+    public List<Animal> getChildrenList(){
+        return children;
     }
 
     public int[] getGenes(int startIndex, int endIndex){
@@ -133,5 +147,26 @@ public class Animal extends AbstractMapElement{
 
     public int getBirthday() {
         return birthday;
+    }
+
+    public void setDeathDay(int day){
+        deathDay = day;
+    }
+
+    public boolean isDead(){
+        if(deathDay == 0)   return false;
+        return true;
+    }
+
+    public int getDeathDay(){
+        return deathDay;
+    }
+
+    public EvolutionSimulatorController getWindowController() {
+        return map.getController();
+    }
+
+    public void setAnimalTrackerObserver(AnimalTrackerObserver trackerObserver){
+        this.trackerObserver = trackerObserver;
     }
 }

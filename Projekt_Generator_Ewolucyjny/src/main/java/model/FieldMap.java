@@ -1,10 +1,12 @@
 package model;
 
 import gui.Drawing;
+import gui.EvolutionSimulatorController;
 import gui.MapColors;
 import javafx.scene.layout.Pane;
 
 import java.util.*;
+
 
 public class FieldMap implements IPositionChangeObserver{
     final private Map<Vector2d, FieldMapCell> animals;
@@ -37,10 +39,10 @@ public class FieldMap implements IPositionChangeObserver{
         aliveAnimals = 0;
 
         this.world = simulation.getPane();
-        fieldDrawing = new Drawing(world, MapColors.FIELD);
+        fieldDrawing = new Drawing(world, MapColors.FIELD, simulation.calculateSizeFactor());
         fieldDrawing.drawRectangle(lowerLeft, upperRight);
 
-        jungleDrawing = new Drawing(world, MapColors.JUNGLE);
+        jungleDrawing = new Drawing(world, MapColors.JUNGLE, simulation.calculateSizeFactor());
         jungleDrawing.drawRectangle(jungleLowerLeft, jungleUpperRight);
         this.simulation = simulation;
 
@@ -109,7 +111,7 @@ public class FieldMap implements IPositionChangeObserver{
     }
 
     private void placeGrass(Vector2d position){
-        grassFields.put(position, new Grass(position, world));
+        grassFields.put(position, new Grass(position, this));
     }
 
     public void putGrasses(){
@@ -327,4 +329,13 @@ public class FieldMap implements IPositionChangeObserver{
     public Pane getPane(){
         return world;
     }
+
+    public EvolutionSimulatorController getController(){
+        return simulation.getController();
+    }
+
+    public Simulation getSimulation(){
+        return simulation;
+    }
+
 }

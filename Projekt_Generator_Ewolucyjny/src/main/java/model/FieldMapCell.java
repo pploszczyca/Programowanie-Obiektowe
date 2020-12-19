@@ -41,6 +41,7 @@ public class FieldMapCell implements IPositionChangeObserver{
 
             if(animal.getEnergy()<=0){
                 animal.removeDrawn();
+                animal.setDeathDay(statistics.getEraCounter()+1);
                 statistics.addDeathAnimal(statistics.getEraCounter()-animal.getBirthday());
                 iterator.remove();
                 animalsRemoved++;

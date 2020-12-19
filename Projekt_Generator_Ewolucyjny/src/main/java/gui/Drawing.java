@@ -8,6 +8,8 @@ import model.IPositionChangeObserver;
 import model.Vector2d;
 import javafx.scene.shape.Rectangle;
 
+import java.util.List;
+
 
 public class Drawing implements IPositionChangeObserver {
     private final int sizeFactor;
@@ -15,19 +17,19 @@ public class Drawing implements IPositionChangeObserver {
     private Pane world;
     private AbstractMapElement mapElement;
 
-    public Drawing(Pane world){
-        sizeFactor = 50;
+    public Drawing(Pane world,int sizeFactor){
+        this.sizeFactor = sizeFactor;
         this.world = world;
         rectangle = new Rectangle();
     }
 
-    public Drawing(Pane world, MapColors color){
-        this(world);
+    public Drawing(Pane world, MapColors color,int sizeFactor){
+        this(world, sizeFactor);
         setColor(color);
     }
 
-    public Drawing(Pane world, AbstractMapElement mapElement){
-        this(world);
+    public Drawing(Pane world, AbstractMapElement mapElement, int sizeFactor){
+        this(world, sizeFactor);
         this.mapElement = mapElement;
         if(mapElement instanceof Animal) {
             rectangle.addEventHandler(MouseEvent.MOUSE_CLICKED, new AnimalEventHandler((Animal) mapElement, world));
@@ -42,7 +44,6 @@ public class Drawing implements IPositionChangeObserver {
 
         world.getChildren().add(rectangle);
     }
-
 
 
     public void drawPoint(Vector2d position){
@@ -66,5 +67,14 @@ public class Drawing implements IPositionChangeObserver {
 
     public void removeObjectFromWorld(){
         world.getChildren().remove(rectangle);
+    }
+
+    public void highlightAnimalsWithPopularGen(List<Animal> animals, String gen){
+        for(Animal animal: animals){
+            if(animal.toString().equals(gen)){
+                animal.setColor(MapColors.ANIMAL_WITH_POPULAR_GEN);
+            }
+        }
+
     }
 }

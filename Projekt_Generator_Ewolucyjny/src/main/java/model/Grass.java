@@ -4,8 +4,8 @@ import gui.MapColors;
 import javafx.scene.layout.Pane;
 
 public class Grass extends AbstractMapElement{
-    public Grass(Vector2d position, Pane world){
-        super(position, world);
+    public Grass(Vector2d position, FieldMap map){
+        super(position, map.getPane(), map.getSimulation().calculateSizeFactor());
         drawElement();
     }
 

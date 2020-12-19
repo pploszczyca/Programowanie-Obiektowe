@@ -2,18 +2,16 @@ package gui;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import model.Animal;
+
+import java.util.Arrays;
 
 
 public class AnimalEventHandler implements EventHandler<Event> {
     private Animal animal;
     private Pane world;
+    private EvolutionSimulatorController controller;
 
     public AnimalEventHandler(Animal animal, Pane mainWorld){
         this.animal = animal;
@@ -22,31 +20,17 @@ public class AnimalEventHandler implements EventHandler<Event> {
 
     @Override
     public void handle(Event event){
-        StackPane layout = new StackPane();
+        PopUpWindow popUpWindow = new PopUpWindow(this);
+        popUpWindow.setWindowView(world.getScene().getWindow());
+        popUpWindow.show();
+        popUpWindow.setText(animal.toString());
 
-        Label label = new Label("Geny: " + animal.toString());
-        label.setMinHeight(100);
-        label.setMinWidth(100);
+        controller = animal.getWindowController();
 
+    }
 
-        layout.getChildren().add(label);
-
-        Scene scene = new Scene(layout, 400,100);
-
-        Stage newWindow = new Stage();
-        newWindow.setScene(scene);
-
-        newWindow.initModality(Modality.WINDOW_MODAL);
-        newWindow.initOwner(world.getScene().getWindow());
-
-        newWindow.setMinHeight(100);
-        newWindow.setMinWidth(400);
-
-        newWindow.setX(world.getScene().getWindow().getX()+400);
-        newWindow.setY(world.getScene().getWindow().getY()+400);
-
-        newWindow.show();
-
-
+    public void setEraStop(long eraAmount){
+        controller.setAnimalTracker(animal);
+        controller.setStopEra(eraAmount);
     }
 }
