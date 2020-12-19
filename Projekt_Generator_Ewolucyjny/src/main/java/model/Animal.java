@@ -25,7 +25,7 @@ public class Animal extends AbstractMapElement{
 
 
     public Animal(FieldMap map, float startEnergy, Vector2d initialPosition, AnimalGenes genes, Pane world, int birthday) {
-        super(initialPosition, world, map.getSimulation().calculateSizeFactor());
+        super(initialPosition, world, map.getSimulation().getSizeFactor());
         this.map = map;
         direction = MapDirection.NORTH.randomDirection();
         animalObservers = new ArrayList<>();

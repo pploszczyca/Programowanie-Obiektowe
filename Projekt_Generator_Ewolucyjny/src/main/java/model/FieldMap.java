@@ -39,10 +39,10 @@ public class FieldMap implements IPositionChangeObserver{
         aliveAnimals = 0;
 
         this.world = simulation.getPane();
-        fieldDrawing = new Drawing(world, MapColors.FIELD, simulation.calculateSizeFactor());
+        fieldDrawing = new Drawing(world, MapColors.FIELD, simulation.getSizeFactor());
         fieldDrawing.drawRectangle(lowerLeft, upperRight);
 
-        jungleDrawing = new Drawing(world, MapColors.JUNGLE, simulation.calculateSizeFactor());
+        jungleDrawing = new Drawing(world, MapColors.JUNGLE, simulation.getSizeFactor());
         jungleDrawing.drawRectangle(jungleLowerLeft, jungleUpperRight);
         this.simulation = simulation;
 

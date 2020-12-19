@@ -5,7 +5,7 @@ import javafx.scene.layout.Pane;
 
 public class Grass extends AbstractMapElement{
     public Grass(Vector2d position, FieldMap map){
-        super(position, map.getPane(), map.getSimulation().calculateSizeFactor());
+        super(position, map.getPane(), map.getSimulation().getSizeFactor());
         drawElement();
     }
 

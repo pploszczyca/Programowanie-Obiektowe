@@ -28,6 +28,7 @@ public class Simulation {
     private MapStatistics statistics;
     private EvolutionSimulatorController controller;
     private AnimalTrackerObserver trackerObserver;
+    private int sizeFactor;
 
     public Simulation(int width, int height, int jungleWidth, int jungleHeight , int startEnergy, int moveEnergy, int plantEnergy, int randomAnimals, Pane world){
         this.width = width;
@@ -39,6 +40,7 @@ public class Simulation {
         this.plantEnergy = plantEnergy;
         this.randomAnimals = randomAnimals;
         this.world = world;
+        sizeFactor = calculateSizeFactor();
         initializeMap();
 
     }
@@ -46,6 +48,7 @@ public class Simulation {
     public Simulation(Pane world, EvolutionSimulatorController controller){
         this.world = world;
         loadDataFromFile();
+        sizeFactor = calculateSizeFactor();
         initializeMap();
         this.controller = controller;
     }
@@ -141,5 +144,9 @@ public class Simulation {
 
     public int calculateSizeFactor(){
         return (int) Math.min(Math.round(800/width), Math.round(800/height));
+    }
+
+    public int getSizeFactor(){
+        return sizeFactor;
     }
 }
