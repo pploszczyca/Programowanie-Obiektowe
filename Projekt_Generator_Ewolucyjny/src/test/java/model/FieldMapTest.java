@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.layout.Pane;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -7,9 +8,9 @@ public class FieldMapTest {
 
     @Test
     public void randomPlaceTest(){
-        FieldMap map = new FieldMap(100,100,new Vector2d(0,0), new Vector2d(0,0), 10, 5, 3);
+        Simulation simulation = new Simulation(100,100,1,1,10,5,3,10000,new Pane());
+        FieldMap map = simulation.getMap();
 
-        map.randomPlace(10000);
         Vector2d position;
 
         for(int i = 0; i < 100; i++){
@@ -24,10 +25,11 @@ public class FieldMapTest {
 
     @Test
     public void multiplicationTest(){
-        FieldMap map = new FieldMap(1,2,new Vector2d(0,0), new Vector2d(0,0), 16, 5, 3);
+        Simulation simulation = new Simulation(1,2,1,1,16,5,3,0,new Pane());
+        FieldMap map = simulation.getMap();
 
-        map.place(new Animal(map, new Vector2d(0,0)));
-        map.place(new Animal(map, new Vector2d(0,0)));
+        map.place(new Animal(map, map.getStartEnergy(), new Vector2d(0,0),0));
+        map.place(new Animal(map, map.getStartEnergy(), new Vector2d(0,0),0));
         map.multiplication();
 
         FieldMapCell cell = (FieldMapCell) map.objectAt(new Vector2d(0,0));
@@ -40,13 +42,14 @@ public class FieldMapTest {
 
 
         // Second test
-        FieldMap anotherMap = new FieldMap(3,3,new Vector2d(0,0), new Vector2d(0,0), 20, 5, 3);
+        Simulation anotherSimulation = new Simulation(3,3,1,1,20,5,3,0,new Pane());
+        FieldMap anotherMap = anotherSimulation.getMap();
         for(int i = 0; i < 3; i++){
             for(int j=0; j < 3; j++){
-                anotherMap.place(new Animal(anotherMap, new Vector2d(i,j)));
+                anotherMap.place(new Animal(anotherMap, anotherMap.getStartEnergy(), new Vector2d(i,j),0));
             }
         }
-        anotherMap.place(new Animal(anotherMap, new Vector2d(1,1)));
+        anotherMap.place(new Animal(anotherMap, anotherMap.getStartEnergy(), new Vector2d(1,1),0));
         anotherMap.multiplication();
 
         FieldMapCell anotherCell = (FieldMapCell) anotherMap.objectAt(new Vector2d(1,1));
@@ -67,11 +70,13 @@ public class FieldMapTest {
 
     @Test
     public void runTest(){
-        FieldMap map = new FieldMap(9,9,new Vector2d(0,0), new Vector2d(0,0), 20, 5, 3);
+        Simulation simulation = new Simulation(9,9,1,1,20,5,3,0,new Pane());
+
+        FieldMap map = simulation.getMap();
 
         for(int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                map.place(new Animal(map, new Vector2d(3*i+1, 3*j+1)));
+                map.place(new Animal(map, map.getStartEnergy(), new Vector2d(3*i+1,3*j+1),0));
                 Assertions.assertTrue(map.isOccupied(new Vector2d(3*i+1, 3*j+1)));
             }
         }
@@ -108,12 +113,12 @@ public class FieldMapTest {
 
     @Test
     public void putGrassesTest(){
-        Vector2d jungleLowerLeft =  new Vector2d(1,1);
-        Vector2d jungleUpperRight = new Vector2d(1,2);
+        Vector2d jungleLowerLeft =  new Vector2d(2,1);
+        Vector2d jungleUpperRight = new Vector2d(2,3);
         int width = 5, height = 5;
-        int grassesInJungle, grassesOutsideJungle;
 
-        FieldMap map = new FieldMap(width,height,jungleLowerLeft,jungleUpperRight, 20, 5, 3);
+        Simulation simulation = new Simulation(width,height,1,3,20,5,3,0,new Pane());
+        FieldMap map = simulation.getMap();
 
         map.putGrasses();
         Assertions.assertArrayEquals(countGrasses(map, jungleLowerLeft, jungleUpperRight, width, height), new int[]{1,1});
@@ -125,15 +130,17 @@ public class FieldMapTest {
             map.putGrasses();
         }
 
-        Assertions.assertArrayEquals(countGrasses(map, jungleLowerLeft, jungleUpperRight, width, height), new int[]{2,7});
+        Assertions.assertArrayEquals(countGrasses(map, jungleLowerLeft, jungleUpperRight, width, height), new int[]{3,7});
 
 
         // second test
-        jungleLowerLeft =  new Vector2d(1,1);
-        jungleUpperRight = new Vector2d(1,1);
-        FieldMap otherMap = new FieldMap(width,height,jungleLowerLeft,jungleUpperRight, 20, 5, 3);
+        jungleLowerLeft =  new Vector2d(2,2);
+        jungleUpperRight = new Vector2d(2,2);
+        Simulation otherSimulation = new Simulation(width,height,1,1,20,5,3,0,new Pane());
 
-        otherMap.place(new Animal(map, jungleLowerLeft));
+        FieldMap otherMap = otherSimulation.getMap();
+
+        otherMap.place(new Animal(otherMap, otherMap.getStartEnergy(), jungleLowerLeft,0));
 
         otherMap.putGrasses();
         otherMap.run();

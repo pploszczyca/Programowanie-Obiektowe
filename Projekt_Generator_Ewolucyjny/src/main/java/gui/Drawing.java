@@ -13,11 +13,7 @@ public class Drawing implements IPositionChangeObserver {
     private final int sizeFactor;
     private Rectangle rectangle;
     private Pane world;
-
-    public Drawing(Pane world, MapColors color){
-        this(world);
-        setColor(color);
-    }
+    private AbstractMapElement mapElement;
 
     public Drawing(Pane world){
         sizeFactor = 50;
@@ -25,10 +21,16 @@ public class Drawing implements IPositionChangeObserver {
         rectangle = new Rectangle();
     }
 
+    public Drawing(Pane world, MapColors color){
+        this(world);
+        setColor(color);
+    }
+
     public Drawing(Pane world, AbstractMapElement mapElement){
         this(world);
+        this.mapElement = mapElement;
         if(mapElement instanceof Animal) {
-            rectangle.addEventHandler(MouseEvent.MOUSE_CLICKED, new AnimalEventHandler((Animal) mapElement));
+            rectangle.addEventHandler(MouseEvent.MOUSE_CLICKED, new AnimalEventHandler((Animal) mapElement, world));
         }
     }
 

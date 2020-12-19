@@ -42,7 +42,7 @@ public class EvolutionSimulatorController {
 
     private class DayTime extends AnimationTimer{
 
-        private long FRAMES_PER_SEC = 25L;
+        private long FRAMES_PER_SEC = 50L;
         private long INTERVAL = 1000000000L / FRAMES_PER_SEC;
 
         private long last = 0;
@@ -72,8 +72,7 @@ public class EvolutionSimulatorController {
         averageEnergy.setText(String.valueOf(statistics.getAverageEnergy()));
         averageAge.setText(String.valueOf(statistics.getAverageAge()));
         averageAmountOfChildren.setText(String.valueOf(statistics.getAverageAmountOfChildren()));
-
-
+        statistics.updateAverageStatistics();
     }
 
     @FXML
@@ -86,11 +85,18 @@ public class EvolutionSimulatorController {
 
     @FXML
     public void start(){
+        world.setDisable(true);
         clock.start();
     }
 
     @FXML
     public void stop(){
+        world.setDisable(false);
         clock.stop();
+    }
+
+    @FXML
+    public void saveStats(){
+        statistics.saveAverageStatistics();
     }
 }

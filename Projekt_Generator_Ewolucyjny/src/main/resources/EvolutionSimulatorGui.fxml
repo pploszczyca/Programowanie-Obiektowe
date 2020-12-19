@@ -31,6 +31,7 @@
                   <Button mnemonicParsing="false" onAction="#start" text="Start" />
                   <Button mnemonicParsing="false" onAction="#stop" text="Stop" />
                   <Button mnemonicParsing="false" onAction="#step" text="Step" />
+                  <Button mnemonicParsing="false" onAction="#saveStats" text="Save Statistics" />
                </children>
             </HBox>
          </children>

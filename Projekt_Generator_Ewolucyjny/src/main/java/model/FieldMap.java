@@ -6,45 +6,36 @@ import javafx.scene.layout.Pane;
 
 import java.util.*;
 
-public class FieldMap implements IWorldMap, IPositionChangeObserver{
+public class FieldMap implements IPositionChangeObserver{
     final private Map<Vector2d, FieldMapCell> animals;
     final private Map<Vector2d, Grass> grassFields;
     private final Vector2d lowerLeft;
     private final Vector2d upperRight;
     private final Vector2d jungleLowerLeft;
     private final Vector2d jungleUpperRight;
-    private final int moveEnergy;
-    final private int startEnergy;
     final private Random random;
-    final private float plantEnergy;
     private Pane world;
     private Drawing fieldDrawing;
     private Drawing jungleDrawing;
     private int aliveAnimals;
     private Simulation simulation;
 
-    public FieldMap(int width, int height, Vector2d jungleLowerLeft, Vector2d jungleUpperRight, int startEnergy, int moveEnergy, float plantEnergy){
+
+    public FieldMap(int width, int height, Vector2d jungleLowerLeft, Vector2d jungleUpperRight, Simulation simulation){
         lowerLeft = new Vector2d(0,0);
         upperRight = new Vector2d(width-1, height-1);
-        this.jungleLowerLeft = jungleLowerLeft;
-        this.jungleUpperRight = jungleUpperRight;
-        animals = new LinkedHashMap<>();
-        grassFields = new LinkedHashMap<>();
-        random = new Random();
-        this.startEnergy = startEnergy;
-        this.moveEnergy = moveEnergy;
-        this.plantEnergy = plantEnergy;
-        aliveAnimals = 0;
-        this.world = new Pane();
 
         if(jungleLowerLeft.follows(jungleUpperRight.add(new Vector2d(1,1))) || jungleUpperRight.x >= width || jungleUpperRight.y >= height){
             throw new IllegalArgumentException("Niepoprawne wektory dla dżungli: "+ jungleLowerLeft + ";"+jungleUpperRight);
         }
 
-    }
+        this.jungleLowerLeft = jungleLowerLeft;
+        this.jungleUpperRight = jungleUpperRight;
+        animals = new LinkedHashMap<>();
+        grassFields = new LinkedHashMap<>();
+        random = new Random();
+        aliveAnimals = 0;
 
-    public FieldMap(int width, int height, Vector2d jungleLowerLeft, Vector2d jungleUpperRight, int startEnergy, int moveEnergy, float plantEnergy, Simulation simulation){
-        this(width, height, jungleLowerLeft, jungleUpperRight, startEnergy, moveEnergy, plantEnergy);
         this.world = simulation.getPane();
         fieldDrawing = new Drawing(world, MapColors.FIELD);
         fieldDrawing.drawRectangle(lowerLeft, upperRight);
@@ -55,7 +46,6 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
 
     }
 
-    @Override
     public boolean isOccupied(Vector2d position) {
         return isOccupiedByAnimal(position) || isOccupiedByGrass(position);
     }
@@ -74,7 +64,7 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
 
     private boolean canRandGrassInJungle(){
         for(int x = jungleLowerLeft.x; x <= jungleUpperRight.x; x++){
-            for(int y = jungleLowerLeft.x; y <= jungleUpperRight.y; y++){
+            for(int y = jungleLowerLeft.y; y <= jungleUpperRight.y; y++){
                 if(!isOccupied(new Vector2d(x,y))){
                     return true;
                 }
@@ -85,7 +75,7 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
 
     private boolean canRandGrassOutsideJungle() {
         for(int x = lowerLeft.x; x <= upperRight.x; x++){
-            for(int y = lowerLeft.x; y <= upperRight.y; y++){
+            for(int y = lowerLeft.y; y <= upperRight.y; y++){
                 if(!(isInJungle(new Vector2d(x,y))) && !isOccupied(new Vector2d(x,y))){
                     return true;
                 }
@@ -153,7 +143,6 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
     private Vector2d findFreePosition(Vector2d center){
         Vector2d position;
         boolean isNotFree = isOccupiedAround(center);
-//        System.out.println(isNotFree);
 
         do{
             position = center.add(MapDirection.NORTH.randomDirection().toUnitVector()).wrapBy(lowerLeft, upperRight);
@@ -178,8 +167,6 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
     }
 
 
-
-    @Override
     public void run() {
         List<Animal> allAnimals = makeListOfAllAnimals();
 
@@ -199,7 +186,7 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
         for(int i = 0; i < animalsAmount; i++){
             position = randomAnimalPosition();
 
-            Animal animal = new Animal(this, startEnergy,position, world, simulation.getEra());
+            Animal animal = new Animal(this, getStartEnergy(),position, simulation.getEra());
             place(animal);
         }
     }
@@ -207,14 +194,13 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
     public void eat(){
         for(Map.Entry<Vector2d, FieldMapCell> entry: animals.entrySet()){
             if(isOccupiedByGrass(entry.getKey())) {
-                entry.getValue().eatingGrass(plantEnergy);
+                entry.getValue().eatingGrass(getPlantEnergy());
                 grassFields.get(entry.getKey()).removeDrawn();
                 grassFields.remove(entry.getKey());
             }
         }
     }
 
-    @Override
     public boolean place(Animal animal) {
         animal.addObserver(this);
         aliveAnimals++;
@@ -254,7 +240,7 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
 
     }
 
-    @Override
+
     public Object objectAt(Vector2d position) {
         Object animalObject = animals.get(position);
         if(animalObject == null){
@@ -289,24 +275,25 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
         else    {animals.put(newPosition, new FieldMapCell(animal, simulation));}
     }
 
-    @Override
+
     public Vector2d getLowerLeft(){
         return lowerLeft;
     }
 
-    @Override
     public Vector2d getUpperRight(){
         return upperRight;
     }
 
-    @Override
     public int getMoveEnergy(){
-        return moveEnergy;
+        return simulation.getMoveEnergy();
     }
 
-    @Override
     public int getStartEnergy() {
-        return startEnergy;
+        return simulation.getStartEnergy();
+    }
+
+    public int getPlantEnergy(){
+        return simulation.getPlantEnergy();
     }
 
     public int getAmountAliveAnimals(){
@@ -335,5 +322,9 @@ public class FieldMap implements IWorldMap, IPositionChangeObserver{
         }
 
         return sum;
+    }
+
+    public Pane getPane(){
+        return world;
     }
 }

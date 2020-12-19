@@ -3,9 +3,11 @@ package statistics;
 import model.Animal;
 import model.FieldMap;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-public class MapStatistics {
+public class MapStatistics extends AbstractMapStatistics{
     final private FieldMap map;
     private int eraCounter;
     private int animalsOnMap;
@@ -18,13 +20,17 @@ public class MapStatistics {
     private int sumAgesOfDead;
     private int deathAmount;
 
+    private AverageMapStatistics averageMapStatistics;
 
     public MapStatistics(FieldMap map){
         eraCounter = 1;
         sumAgesOfDead = 0;
         deathAmount = 0;
         averageAge = 0;
+        averageEnergy = 0;
+        averageAmountOfChildren = 0;
         this.map = map;
+        averageMapStatistics = new AverageMapStatistics();
     }
 
     public int getEraCounter(){
@@ -83,24 +89,18 @@ public class MapStatistics {
             }
 
             genes.put(gen, amount);
-
         }
 
-        Map.Entry<String, Integer> maxEntry = null;
-
-        for (Map.Entry<String, Integer> entry : genes.entrySet()) {
-            if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
-                maxEntry = entry;
-            }
-        }
-
-        try{
-            mostPopularGen =  maxEntry.getKey();
-        } catch (Exception ex){
-            mostPopularGen = "";
-        }
-
+        mostPopularGen = findMostPopularGen(genes);
         return mostPopularGen;
+    }
+
+    public void updateAverageStatistics(){
+        averageMapStatistics.updateStatistics(animalsOnMap, plantsOnMap, mostPopularGen, averageEnergy, averageAge, averageAmountOfChildren);
+    }
+
+    public void saveAverageStatistics(){
+        averageMapStatistics.saveStatistics();
     }
 
 }

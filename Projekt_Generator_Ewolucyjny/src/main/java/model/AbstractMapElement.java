@@ -5,8 +5,8 @@ import gui.MapColors;
 import javafx.scene.layout.Pane;
 
 abstract public class AbstractMapElement{
-    Vector2d position;
-    Drawing drawing;
+    protected Vector2d position;
+    protected Drawing drawing;
 
     AbstractMapElement(Vector2d position){
         this.position = position;

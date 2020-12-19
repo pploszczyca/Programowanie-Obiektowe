@@ -46,11 +46,12 @@ public class AnimalGenesTest {
         Assertions.assertArrayEquals(animalGenes.getGenesElements(0,3), new int[]{0,0,0,0});
         Assertions.assertArrayEquals(animalGenes.getGenesElements(4,10), new int[]{1,1,1,1,2,2,2});
         Assertions.assertArrayEquals(animalGenes.getGenesElements(0,31), new int[]{0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7});
-//        Assertions.assertThrows("Indeksy: 0;32 niepoprawne w getGenesElements", IllegalArgumentException.class, ()->{
-//            Assertions.assertArrayEquals(new AnimalGenes(new int[]{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7}, new int[]{0,1,2,3,4,5,6,7}, new int[]{0,1,2,3,4,5,6,7}).getGenesElements(0,32), new int[]{0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7});
-//        });
-//        Assertions.assertThrows("Indeksy: -1;31 niepoprawne w getGenesElements", IllegalArgumentException.class, ()->{
-//            Assertions.assertArrayEquals(new AnimalGenes(new int[]{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7}, new int[]{0,1,2,3,4,5,6,7}, new int[]{0,1,2,3,4,5,6,7}).getGenesElements(-1,31), new int[]{0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7});
-//        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, ()->{
+            Assertions.assertArrayEquals(new AnimalGenes(new int[]{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7}, new int[]{0,1,2,3,4,5,6,7}, new int[]{0,1,2,3,4,5,6,7}).getGenesElements(0,32), new int[]{0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7});
+        } , "Indeksy: 0;32 niepoprawne w getGenesElements");
+        Assertions.assertThrows(IllegalArgumentException.class, ()->{
+            Assertions.assertArrayEquals(new AnimalGenes(new int[]{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7}, new int[]{0,1,2,3,4,5,6,7}, new int[]{0,1,2,3,4,5,6,7}).getGenesElements(-1,31), new int[]{0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7});
+        }, "Indeksy: -1;31 niepoprawne w getGenesElements");
     }
 }

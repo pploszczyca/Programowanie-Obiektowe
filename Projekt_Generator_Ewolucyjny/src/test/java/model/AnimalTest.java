@@ -9,8 +9,8 @@ public class AnimalTest {
 
     @Test
     public void moveTest(){
-        FieldMap map = new FieldMap(10,10,new Vector2d(0,0), new Vector2d(0,0),10, 5, 0);
-        Animal animal = new Animal(map, new Vector2d(5,5));
+        Simulation simulation = new Simulation(10,10,1,1,10,5,0,0,new Pane());
+        Animal animal = new Animal(simulation.getMap(), simulation.getStartEnergy(), new Vector2d(5,5), 0);
 
         Assertions.assertEquals(animal.getPosition(), new Vector2d(5,5));
         Assertions.assertEquals(animal.getEnergy(), 10, 0);
@@ -33,8 +33,10 @@ public class AnimalTest {
 
     @Test
     public void getPointColorTest(){
-        FieldMap map = new FieldMap(10,10,new Vector2d(0,0), new Vector2d(0,0),18, 3, 0);
-        Animal animal = new Animal(map, 18, new Vector2d(4,4), new AnimalGenes(), new Pane());
+        Simulation simulation = new Simulation(10,10,1,1,18,3,0,0,new Pane());
+
+        FieldMap map = simulation.getMap();
+        Animal animal = new Animal(map, 18, new Vector2d(4,4), new AnimalGenes(), new Pane(),0);
 
         map.place(animal);
         map.run();
@@ -56,12 +58,6 @@ public class AnimalTest {
         Assertions.assertEquals(animal.getPointColor(), MapColors.ANIMAL_MIDDLE_ENERGY);
         animal.addEnergy(6);
         Assertions.assertEquals(animal.getPointColor(), MapColors.ANIMAL_MAX_ENERGY);
-
-
-
-
-
-
 
     }
 }

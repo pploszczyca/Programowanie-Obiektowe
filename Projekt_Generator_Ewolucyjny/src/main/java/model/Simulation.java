@@ -2,6 +2,7 @@ package model;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import gui.EvolutionSimulatorController;
 import javafx.scene.layout.Pane;
 import statistics.MapStatistics;
 
@@ -18,12 +19,12 @@ public class Simulation {
     private int jungleHeight;
     private int startEnergy;
     private int moveEnergy;
-    private float plantEnergy;
+    private int plantEnergy;
     private int randomAnimals;
     private Pane world;
     private MapStatistics statistics;
 
-    public Simulation(int width, int height, int jungleWidth, int jungleHeight , int startEnergy, int moveEnergy, float plantEnergy, int randomAnimals, Pane world){
+    public Simulation(int width, int height, int jungleWidth, int jungleHeight , int startEnergy, int moveEnergy, int plantEnergy, int randomAnimals, Pane world){
         this.width = width;
         this.height = height;
         this.jungleWidth = jungleWidth;
@@ -34,6 +35,7 @@ public class Simulation {
         this.randomAnimals = randomAnimals;
         this.world = world;
         initializeMap();
+
     }
 
     public Simulation(Pane world){
@@ -43,7 +45,7 @@ public class Simulation {
     }
 
     private void initializeMap(){
-        map = new FieldMap(width, height, calculateJungleLowerLeft(width,height,jungleWidth, jungleHeight), calculateJungleUpperRight(width,height,jungleWidth, jungleHeight), startEnergy, moveEnergy, plantEnergy, this);
+        map = new FieldMap(width, height, calculateJungleLowerLeft(width,height,jungleWidth, jungleHeight), calculateJungleUpperRight(width,height,jungleWidth, jungleHeight), this);
         statistics = new MapStatistics(map);
         map.randomPlace(randomAnimals);
     }
@@ -59,7 +61,7 @@ public class Simulation {
             jungleHeight = parser.get("jungleHeight").getAsInt();
             startEnergy = parser.get("startEnergy").getAsInt();
             moveEnergy = parser.get("moveEnergy").getAsInt();
-            plantEnergy = parser.get("plantEnergy").getAsFloat();
+            plantEnergy = parser.get("plantEnergy").getAsInt();
             randomAnimals = parser.get("randomAnimals").getAsInt();
 
         }catch (Exception ex){
@@ -96,6 +98,19 @@ public class Simulation {
         return statistics.getEraCounter();
     }
 
+    public int getStartEnergy() {
+        return startEnergy;
+    }
 
+    public int getPlantEnergy() {
+        return plantEnergy;
+    }
 
+    public int getMoveEnergy(){
+        return moveEnergy;
+    }
+
+    public FieldMap getMap(){
+        return map;
+    }
 }

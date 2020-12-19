@@ -9,56 +9,19 @@ import java.util.List;
 public class Animal extends AbstractMapElement{
     private MapDirection direction;
     private Vector2d position;
-    private final IWorldMap map;
+    private final FieldMap map;
     private final List<IPositionChangeObserver> animalObservers;
     private float energy;
     private AnimalGenes genes;
     private final List<Animal> children;
     private int birthday;
 
-
-    public Animal(IWorldMap map, Vector2d initialPosition){
-        this(map, map.getStartEnergy(), initialPosition);
+    public Animal(FieldMap map, float startEnergy, Vector2d initialPosition, int birthday){
+        this(map, startEnergy, initialPosition, new AnimalGenes(), map.getPane(), birthday);
     }
 
-    public Animal(IWorldMap map, float startEnergy){
-        this(map,startEnergy, new Vector2d(2,2));
-    }
 
-    public Animal(IWorldMap map, float startEnergy, Vector2d initialPosition){
-        this(map, startEnergy, initialPosition, new AnimalGenes());
-    }
-
-    public Animal(IWorldMap map, float startEnergy, Vector2d initialPosition, Pane world, int era){
-        this(map, startEnergy, initialPosition, new AnimalGenes(), world, era);
-    }
-
-    public Animal(IWorldMap map, float startEnergy, Vector2d initialPosition, AnimalGenes genes) {
-        super(initialPosition);
-        this.map = map;
-        direction = MapDirection.NORTH.randomDirection();
-        animalObservers = new ArrayList<>();
-        this.genes = genes;
-        energy = startEnergy;
-        children = new ArrayList<>();
-        position = initialPosition;
-    }
-
-    public Animal(IWorldMap map, float startEnergy, Vector2d initialPosition, AnimalGenes genes, Pane world){
-        super(initialPosition, world);
-        this.map = map;
-        direction = MapDirection.NORTH.randomDirection();
-        animalObservers = new ArrayList<>();
-        this.genes = genes;
-        energy = startEnergy;
-        children = new ArrayList<>();
-        position = initialPosition;
-        addObserver(drawing);
-        drawElement();
-
-    }
-
-    public Animal(IWorldMap map, float startEnergy, Vector2d initialPosition, AnimalGenes genes, Pane world, int birthday) {
+    public Animal(FieldMap map, float startEnergy, Vector2d initialPosition, AnimalGenes genes, Pane world, int birthday) {
         super(initialPosition, world);
         this.map = map;
         direction = MapDirection.NORTH.randomDirection();
@@ -79,9 +42,8 @@ public class Animal extends AbstractMapElement{
     }
 
 
-
     public void move(){
-        energy = energy - map.getMoveEnergy();
+        removeEnergy(map.getMoveEnergy());
         direction = direction.rotate(genes.drawRotation());
         Vector2d oldPosition = position;
         position = position.add(direction.toUnitVector()).wrapBy(map.getLowerLeft(), map.getUpperRight());
@@ -97,10 +59,12 @@ public class Animal extends AbstractMapElement{
 
     public void addEnergy(float extraEnergy){
         energy += extraEnergy;
+        drawing.setColor(getPointColor());
     }
 
     public void removeEnergy(float extraEnergy){
         energy -= extraEnergy;
+        drawing.setColor(getPointColor());
     }
 
     public void addObserver(IPositionChangeObserver observer){

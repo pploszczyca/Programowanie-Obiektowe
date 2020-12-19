@@ -1,0 +1,8 @@
+UŚREDNIONE STATYSTYKI
+Epoka nr: 423
+Ilość zwierząt na mapie: 20.26713947990544
+Ilość roślin na mapie: 42.565011820330966
+Średnia ilość energii: 21.137860049029047
+Średni wiek zwierzęcia: 13.348017345928978
+Średnia ilość dzieci: 1.682463608981588
+Najpopularniejszy genotyp: 00011122222333334444455556666677
