@@ -3,28 +3,22 @@ package model;
 import java.util.Random;
 
 public enum MapDirection{
-    NORTH("Północ", new Vector2d(0,1),0),
-    NORTH_EAST("Północny-Zachód", new Vector2d(1,1),1),
-    EAST("Wschód", new Vector2d(1,0),2),
-    SOUTH_EAST("Południowy-Zachód", new Vector2d(1,-1),3),
-    SOUTH("Południe", new Vector2d(0,-1),4),
-    SOUTH_WEST("Południowy-sWschód", new Vector2d(-1,-1),5),
-    WEST("Zachód",new Vector2d(-1,0),6),
-    NORTH_WEST("Północny-Wschód", new Vector2d(-1,1),7);
+    NORTH(new Vector2d(0,1),0),
+    NORTH_EAST( new Vector2d(1,1),1),
+    EAST(new Vector2d(1,0),2),
+    SOUTH_EAST(new Vector2d(1,-1),3),
+    SOUTH( new Vector2d(0,-1),4),
+    SOUTH_WEST( new Vector2d(-1,-1),5),
+    WEST(new Vector2d(-1,0),6),
+    NORTH_WEST(new Vector2d(-1,1),7);
 
 
-    private String directionName;
     private Vector2d unitVector;
     private int directionNumber;
 
-    private MapDirection(String directionName, Vector2d unitVector, int directionNumber){
+    private MapDirection(Vector2d unitVector, int directionNumber){
         this.unitVector = unitVector;
-        this.directionName = directionName;
         this.directionNumber = directionNumber;
-    }
-
-    public String toString(){
-        return this.directionName;
     }
 
     public MapDirection rotate(int number){

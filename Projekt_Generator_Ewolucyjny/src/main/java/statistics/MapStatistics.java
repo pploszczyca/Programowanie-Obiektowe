@@ -13,14 +13,14 @@ public class MapStatistics extends AbstractMapStatistics{
     private int animalsOnMap;
     private int plantsOnMap;
     private String mostPopularGen;
-    private float averageEnergy;
+    private double averageEnergy;
     private float averageAge;
     private float averageAmountOfChildren;
 
     private int sumAgesOfDead;
     private int deathAmount;
 
-    private AverageMapStatistics averageMapStatistics;
+    private final AverageMapStatistics averageMapStatistics;
 
     public MapStatistics(FieldMap map){
         eraCounter = 1;
@@ -41,8 +41,15 @@ public class MapStatistics extends AbstractMapStatistics{
         eraCounter++;
     }
 
+    public void increaseAnimalsOnMap(int number){
+        animalsOnMap += number;
+    }
+
+    public void reduceAnimalsOnMap(int number){
+        animalsOnMap -= number;
+    }
+
     public int getAnimalsOnMap(){
-        animalsOnMap = map.getAmountAliveAnimals();
         return animalsOnMap;
     }
 
@@ -51,13 +58,13 @@ public class MapStatistics extends AbstractMapStatistics{
         return plantsOnMap;
     }
 
-    public float getAverageEnergy(){
-        averageEnergy = map.sumAnimalsEnergy()/map.getAmountAliveAnimals();
+    public double getAverageEnergy(){
+        averageEnergy = map.sumAnimalsEnergy()/animalsOnMap;
         return averageEnergy;
     }
 
     public float getAverageAmountOfChildren(){
-        averageAmountOfChildren = (float) map.getAnimalsChildrenAmount()/map.getAmountAliveAnimals();
+        averageAmountOfChildren = (float) map.getAnimalsChildrenAmount()/animalsOnMap;
         return averageAmountOfChildren;
     }
 
@@ -70,7 +77,6 @@ public class MapStatistics extends AbstractMapStatistics{
     public float getAverageAge(){
         return averageAge;
     }
-
 
     public String getMostPopularGen(){
         List<Animal> animals = map.makeListOfAllAnimals();

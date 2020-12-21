@@ -13,16 +13,15 @@ public class Animal extends AbstractMapElement{
     private final FieldMap map;
     private final List<IPositionChangeObserver> animalObservers;
     private float energy;
-    private AnimalGenes genes;
+    private final AnimalGenes genes;
     private final List<Animal> children;
-    private int birthday;
+    private final int birthday;
     private int deathDay;
     private AnimalTrackerObserver trackerObserver;
 
     public Animal(FieldMap map, float startEnergy, Vector2d initialPosition, int birthday){
         this(map, startEnergy, initialPosition, new AnimalGenes(), map.getPane(), birthday);
     }
-
 
     public Animal(FieldMap map, float startEnergy, Vector2d initialPosition, AnimalGenes genes, Pane world, int birthday) {
         super(initialPosition, world, map.getSimulation().getSizeFactor());
@@ -40,12 +39,10 @@ public class Animal extends AbstractMapElement{
         trackerObserver = null;
     }
 
-
     @Override
     public String toString(){
         return genes.toString();
     }
-
 
     public void move(){
         removeEnergy(map.getMoveEnergy());
@@ -53,10 +50,8 @@ public class Animal extends AbstractMapElement{
         Vector2d oldPosition = position;
         position = position.add(direction.toUnitVector()).wrapBy(map.getLowerLeft(), map.getUpperRight());
 
-
         positionChanged(oldPosition, position);
     }
-
 
     public float getEnergy(){
         return energy;
@@ -86,7 +81,6 @@ public class Animal extends AbstractMapElement{
         for(IPositionChangeObserver observer: observers){
             observer.positionChanged(oldPosition, newPosition);
         }
-
     }
 
     public boolean canReproduce(){
@@ -114,15 +108,8 @@ public class Animal extends AbstractMapElement{
         return genes.getGenesElements(startIndex, endIndex);
     }
 
-    public int[] getGenes(){
-        return getGenes(0,31);
-    }
-
     public boolean equals(Object other) {
-        if (this == other)
-            return true;
-
-        return false;
+        return this == other;
     }
 
     @Override
@@ -154,8 +141,7 @@ public class Animal extends AbstractMapElement{
     }
 
     public boolean isDead(){
-        if(deathDay == 0)   return false;
-        return true;
+        return deathDay != 0;
     }
 
     public int getDeathDay(){

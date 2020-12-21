@@ -1,7 +1,6 @@
 package model;
 
 import gui.MapColors;
-import javafx.scene.layout.Pane;
 
 public class Grass extends AbstractMapElement{
     public Grass(Vector2d position, FieldMap map){

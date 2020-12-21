@@ -56,7 +56,7 @@ public class AnimalTrackerObserver {
             return "Obserwowane zwierzę umarło w " + trackedAnimal.getDeathDay() + " epoce.";
         }
         else {
-            return "Obserwowane zwierzę ma " + countChildren() + " żywych dzieci, oraz " + countDescendants() + " żywych potomków";
+            return "Obserwowane zwierzę zyskało " + countDescendants() + " żywych potomków, w tym " + countChildren() + " żywych dzieci";
         }
     }
 

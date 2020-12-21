@@ -10,12 +10,10 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.List;
 
-
 public class Drawing implements IPositionChangeObserver {
     private final int sizeFactor;
-    private Rectangle rectangle;
-    private Pane world;
-    private AbstractMapElement mapElement;
+    private final Rectangle rectangle;
+    private final Pane world;
 
     public Drawing(Pane world,int sizeFactor){
         this.sizeFactor = sizeFactor;
@@ -30,12 +28,10 @@ public class Drawing implements IPositionChangeObserver {
 
     public Drawing(Pane world, AbstractMapElement mapElement, int sizeFactor){
         this(world, sizeFactor);
-        this.mapElement = mapElement;
         if(mapElement instanceof Animal) {
             rectangle.addEventHandler(MouseEvent.MOUSE_CLICKED, new AnimalEventHandler((Animal) mapElement, world));
         }
     }
-
 
     public void drawRectangle(Vector2d lowerLeft, Vector2d upperRight){
         setPosition(lowerLeft);
@@ -45,11 +41,9 @@ public class Drawing implements IPositionChangeObserver {
         world.getChildren().add(rectangle);
     }
 
-
     public void drawPoint(Vector2d position){
         drawRectangle(position, position);
     }
-
 
     public void setColor(MapColors color){
         rectangle.setFill(color.getColor());

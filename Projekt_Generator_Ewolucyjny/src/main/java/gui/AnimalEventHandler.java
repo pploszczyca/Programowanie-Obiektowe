@@ -5,8 +5,6 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import model.Animal;
 
-import java.util.Arrays;
-
 
 public class AnimalEventHandler implements EventHandler<Event> {
     private Animal animal;

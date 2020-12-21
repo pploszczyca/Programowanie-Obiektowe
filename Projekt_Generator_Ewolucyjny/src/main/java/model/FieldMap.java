@@ -7,7 +7,6 @@ import javafx.scene.layout.Pane;
 
 import java.util.*;
 
-
 public class FieldMap implements IPositionChangeObserver{
     final private Map<Vector2d, FieldMapCell> animals;
     final private Map<Vector2d, Grass> grassFields;
@@ -16,12 +15,8 @@ public class FieldMap implements IPositionChangeObserver{
     private final Vector2d jungleLowerLeft;
     private final Vector2d jungleUpperRight;
     final private Random random;
-    private Pane world;
-    private Drawing fieldDrawing;
-    private Drawing jungleDrawing;
-    private int aliveAnimals;
-    private Simulation simulation;
-
+    private final Pane world;
+    private final Simulation simulation;
 
     public FieldMap(int width, int height, Vector2d jungleLowerLeft, Vector2d jungleUpperRight, Simulation simulation){
         lowerLeft = new Vector2d(0,0);
@@ -36,16 +31,14 @@ public class FieldMap implements IPositionChangeObserver{
         animals = new LinkedHashMap<>();
         grassFields = new LinkedHashMap<>();
         random = new Random();
-        aliveAnimals = 0;
 
         this.world = simulation.getPane();
-        fieldDrawing = new Drawing(world, MapColors.FIELD, simulation.getSizeFactor());
+        Drawing fieldDrawing = new Drawing(world, MapColors.FIELD, simulation.getSizeFactor());
         fieldDrawing.drawRectangle(lowerLeft, upperRight);
 
-        jungleDrawing = new Drawing(world, MapColors.JUNGLE, simulation.getSizeFactor());
+        Drawing jungleDrawing = new Drawing(world, MapColors.JUNGLE, simulation.getSizeFactor());
         jungleDrawing.drawRectangle(jungleLowerLeft, jungleUpperRight);
         this.simulation = simulation;
-
     }
 
     public boolean isOccupied(Vector2d position) {
@@ -168,7 +161,6 @@ public class FieldMap implements IPositionChangeObserver{
         return position;
     }
 
-
     public void run() {
         List<Animal> allAnimals = makeListOfAllAnimals();
 
@@ -188,7 +180,7 @@ public class FieldMap implements IPositionChangeObserver{
         for(int i = 0; i < animalsAmount; i++){
             position = randomAnimalPosition();
 
-            Animal animal = new Animal(this, getStartEnergy(),position, simulation.getEra());
+            Animal animal = new Animal(this, simulation.getStartEnergy(),position, simulation.getEra());
             place(animal);
         }
     }
@@ -196,16 +188,16 @@ public class FieldMap implements IPositionChangeObserver{
     public void eat(){
         for(Map.Entry<Vector2d, FieldMapCell> entry: animals.entrySet()){
             if(isOccupiedByGrass(entry.getKey())) {
-                entry.getValue().eatingGrass(getPlantEnergy());
+                entry.getValue().eatingGrass(simulation.getPlantEnergy());
                 grassFields.get(entry.getKey()).removeDrawn();
                 grassFields.remove(entry.getKey());
             }
         }
     }
 
-    public boolean place(Animal animal) {
+    public void place(Animal animal) {
         animal.addObserver(this);
-        aliveAnimals++;
+        simulation.getStatistics().increaseAnimalsOnMap(1);
 
         if(isOccupiedByAnimal(animal.getPosition())){
             animals.get(animal.getPosition()).add(animal);
@@ -213,10 +205,7 @@ public class FieldMap implements IPositionChangeObserver{
         else{
             animals.put(animal.getPosition(), new FieldMapCell(animal, simulation));
         }
-
-        return true;
     }
-
 
     public void multiplication(){
         AnimalPair parents;
@@ -233,7 +222,6 @@ public class FieldMap implements IPositionChangeObserver{
                     parents.addChild(childAnimal);
                 }
             }
-
         }
 
         for(Animal children: newChildren){
@@ -241,7 +229,6 @@ public class FieldMap implements IPositionChangeObserver{
         }
 
     }
-
 
     public Object objectAt(Vector2d position) {
         Object animalObject = animals.get(position);
@@ -262,7 +249,7 @@ public class FieldMap implements IPositionChangeObserver{
 
     public void removeAnimalsWithLowEnergy(){
         for(Map.Entry<Vector2d, FieldMapCell> entry: animals.entrySet()){
-            aliveAnimals -= entry.getValue().removeWithLowEnergy();
+            simulation.getStatistics().reduceAnimalsOnMap(entry.getValue().removeWithLowEnergy());
         }
 
         removeEmptyCells();
@@ -276,7 +263,6 @@ public class FieldMap implements IPositionChangeObserver{
         if(isOccupiedByAnimal(newPosition)) {animals.get(newPosition).add(animal);}
         else    {animals.put(newPosition, new FieldMapCell(animal, simulation));}
     }
-
 
     public Vector2d getLowerLeft(){
         return lowerLeft;
@@ -294,19 +280,11 @@ public class FieldMap implements IPositionChangeObserver{
         return simulation.getStartEnergy();
     }
 
-    public int getPlantEnergy(){
-        return simulation.getPlantEnergy();
-    }
-
-    public int getAmountAliveAnimals(){
-        return aliveAnimals;
-    }
-
     public int getGrassAmount(){
         return grassFields.size();
     }
 
-    public float sumAnimalsEnergy(){
+    public double sumAnimalsEnergy(){
         float sum = 0;
 
         for(Map.Entry<Vector2d, FieldMapCell> entry: animals.entrySet()){

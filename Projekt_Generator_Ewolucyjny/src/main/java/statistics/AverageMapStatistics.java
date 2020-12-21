@@ -3,6 +3,8 @@ package statistics;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -10,7 +12,7 @@ public class AverageMapStatistics extends AbstractMapStatistics{
     private int eraCounter;
     private double animalsOnMap;
     private double plantsOnMap;
-    private Map<String, Integer> mostPopularGens;
+    private final Map<String, Integer> mostPopularGens;
     private double averageEnergy;
     private double averageAge;
     private double averageAmountOfChildren;
@@ -25,9 +27,16 @@ public class AverageMapStatistics extends AbstractMapStatistics{
         mostPopularGens = new LinkedHashMap<>();
     }
 
+    private String getDate(){
+        Date nowDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        return dateFormat.format(nowDate);
+    }
+
     public void saveStatistics(){
         try{
-            File file = new File("map_statistics.txt");
+            File file = new File("statistics/map_statistics " + getDate() + ".txt");
             FileWriter writer = new FileWriter(file);
 
             writer.write("UŚREDNIONE STATYSTYKI\n");
@@ -62,7 +71,7 @@ public class AverageMapStatistics extends AbstractMapStatistics{
         mostPopularGens.put(gen, amount);
     }
 
-    public void updateStatistics(int animalsOnMap, int plantsOnMap, String popularGen, float averageEnergy, float averageAge, float averageAmountOfChildren){
+    public void updateStatistics(int animalsOnMap, int plantsOnMap, String popularGen, double averageEnergy, double averageAge, double averageAmountOfChildren){
         this.animalsOnMap = averageTheValue(this.animalsOnMap, animalsOnMap);
         this.plantsOnMap = averageTheValue(this.plantsOnMap, plantsOnMap);
         increaseGenCounter(popularGen);

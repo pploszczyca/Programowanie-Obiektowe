@@ -6,7 +6,7 @@ import java.util.Random;
 public class AnimalGenes {
     private final int genesLength = 32;
     private final int possibleDifferentGenes = 8;
-    private int genes[] = new int[genesLength];
+    private final int[] genes = new int[genesLength];
     private final Random random = new Random();
 
     public AnimalGenes(){
@@ -42,7 +42,6 @@ public class AnimalGenes {
                 rotationsAmount[i]++;
             }
         }
-
     }
 
     private void addElementsToGenes(int startIndex, int[] array){
@@ -88,5 +87,4 @@ public class AnimalGenes {
 
         return gen.toString();
     }
-
 }

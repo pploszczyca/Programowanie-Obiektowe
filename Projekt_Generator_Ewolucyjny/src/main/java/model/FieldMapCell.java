@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class FieldMapCell implements IPositionChangeObserver{
-    private List<Animal> animals;
-    private MapStatistics statistics;
+    private final List<Animal> animals;
+    private final MapStatistics statistics;
 
     public FieldMapCell(Animal animal, Simulation simulation){
         animals = new ArrayList<>();
@@ -87,7 +87,6 @@ public class FieldMapCell implements IPositionChangeObserver{
         }
     }
 
-
     public int size(){
         return animals.size();
     }
@@ -126,10 +125,6 @@ public class FieldMapCell implements IPositionChangeObserver{
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         Animal animal = removeAnimal(newPosition);
         animal.removeObserver(this);
-    }
-
-    public int getAnimalsAmount(){
-        return animals.size();
     }
 
     public float sumAnimalsEnergy(){

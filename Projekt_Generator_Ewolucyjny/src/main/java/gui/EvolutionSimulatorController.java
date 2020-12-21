@@ -48,7 +48,6 @@ public class EvolutionSimulatorController {
     @FXML
     Button stopButton;
 
-
     private Simulation simulation;
     private MapStatistics statistics;
     private long stopEra;
@@ -88,7 +87,7 @@ public class EvolutionSimulatorController {
     }
 
     private void updateStatistics(){
-        eraText.setText("Epoka: " + String.valueOf(statistics.getEraCounter()));
+        eraText.setText("Epoka: " + statistics.getEraCounter());
         animalsOnMap.setText(String.valueOf(statistics.getAnimalsOnMap()));
         plantsOnMap.setText(String.valueOf(statistics.getPlantsOnMap()));
         mostPopularGen.setText(statistics.getMostPopularGen());
@@ -124,11 +123,13 @@ public class EvolutionSimulatorController {
     @FXML
     public void saveStats(){
         statistics.saveAverageStatistics();
+        saveButton.setDisable(true);
     }
 
     @FXML
     public void findAnimalsWithPopularGens(){
         simulation.highlightAnimalsWithPopularGen();
+        highlightButton.setDisable(true);
     }
 
     private void setButtonsNoActivity(boolean status){
@@ -144,7 +145,6 @@ public class EvolutionSimulatorController {
     public void setAnimalTracker(Animal animal){
         simulation.startAnimalObservation(animal);
     }
-
 
     public void setStopEra(long eraAmount){
         stopEra = simulation.getEra()+eraAmount;

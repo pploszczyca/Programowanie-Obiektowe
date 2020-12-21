@@ -14,17 +14,14 @@ import javafx.stage.Window;
 
 
 public class PopUpWindow {
-    private FXMLLoader loader;
     private VBox root;
-    private Stage window;
-    private Button confirmButton;
-    private AnimalEventHandler handler;
-
+    private final Stage window;
+    private final AnimalEventHandler handler;
 
     public PopUpWindow(AnimalEventHandler handler){
         this.handler = handler;
         try {
-            loader = new FXMLLoader();
+            FXMLLoader loader = new FXMLLoader();
             root = loader.load(getClass().getResource("/PopUpGui.fxml"));
         } catch (Exception e){
             e.printStackTrace();
@@ -41,7 +38,7 @@ public class PopUpWindow {
     }
 
     private void setButtonOnClickAction(){
-        confirmButton = (Button) window.getScene().lookup("#confirmButton");
+        Button confirmButton = (Button) window.getScene().lookup("#confirmButton");
         confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -67,9 +64,13 @@ public class PopUpWindow {
     }
 
     public void setStopEra(){
-        TextField eraField = (TextField) window.getScene().lookup("#eraField");
-        handler.setEraStop(Long.parseLong(eraField.getText(),10));
-
+        try {
+            TextField eraField = (TextField) window.getScene().lookup("#eraField");
+            long eraNumber = Long.parseLong(eraField.getText(),10);
+            handler.setEraStop(eraNumber);
+        } catch (NumberFormatException ex){
+            System.out.println("Niepoprawnie wpisana wartość dla śledzenia epok");
+        }
     }
 
 

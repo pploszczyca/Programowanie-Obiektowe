@@ -8,8 +8,8 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class InformationWindow {
-    private Stage window;
-    private Label label;
+    private final Stage window;
+    private final Label label;
 
     public InformationWindow(){
         window = new Stage();

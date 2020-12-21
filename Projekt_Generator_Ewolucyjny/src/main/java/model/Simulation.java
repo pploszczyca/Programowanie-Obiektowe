@@ -5,7 +5,6 @@ import com.google.gson.JsonParser;
 import gui.Drawing;
 import gui.EvolutionSimulatorController;
 import gui.InformationWindow;
-import gui.MapColors;
 import javafx.scene.layout.Pane;
 import statistics.MapStatistics;
 
@@ -77,7 +76,6 @@ public class Simulation {
             ex.printStackTrace();
         }
     }
-
 
     private Vector2d calculateJungleLowerLeft(int width, int height, int jungleWidth, int jungleHeight){
         return new Vector2d(Math.round((width-jungleWidth)/2),  Math.round((height-jungleHeight)/2));

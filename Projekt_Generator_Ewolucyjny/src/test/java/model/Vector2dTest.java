@@ -61,17 +61,6 @@ public class Vector2dTest {
         Assertions.assertTrue(new Vector2d(1, 2).add(new Vector2d(-3,-5)).equals(new Vector2d(-2, -3)));
     }
 
-    @Test
-    public void isSubtracting(){
-        Assertions.assertTrue(new Vector2d(1, 2).subtract(new Vector2d(3,5)).equals(new Vector2d(-2, -3)));
-        Assertions.assertTrue(new Vector2d(1, 2).subtract(new Vector2d(-3,-5)).equals(new Vector2d(4, 7)));
-    }
-
-    @Test
-    public void testOpposite(){
-        Assertions.assertTrue(new Vector2d(1,2).opposite().equals(new Vector2d(-1,-2)));
-        Assertions.assertTrue(new Vector2d(-1,-2).opposite().equals(new Vector2d(1,2)));
-    }
 
     @Test
     public void testWrapBy(){
