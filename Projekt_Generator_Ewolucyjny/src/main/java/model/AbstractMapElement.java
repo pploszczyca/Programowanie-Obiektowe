@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 
 abstract public class AbstractMapElement{
     protected Vector2d position;
-    protected Drawing drawing;
+    protected Drawing drawing;  // pomieszanie logiki aplikacji z wizualizacją
 
     AbstractMapElement(Vector2d position){
         this.position = position;

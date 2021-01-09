@@ -48,7 +48,7 @@ public class Vector2d{
 
     public Vector2d wrapBy(Vector2d lowerLeftCorner, Vector2d upperRightCorner){
         int x = this.x,y = this.y;
-        if(x == lowerLeftCorner.x-1) x = upperRightCorner.x;
+        if(x == lowerLeftCorner.x-1) x = upperRightCorner.x;    // a jakby wyjść dalej niż o 1?
         if(x == upperRightCorner.x+1) x = lowerLeftCorner.x;
         if(y == lowerLeftCorner.y-1) y = upperRightCorner.y;
         if(y == upperRightCorner.y+1) y = lowerLeftCorner.y;

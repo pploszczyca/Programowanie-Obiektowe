@@ -1,5 +1,5 @@
-package gui;
-
+package gui;    // zbiór niepowiązanych ze sobą pakietów?
+// co mam oceniać? Projekt1, czy Projekt_Generator_Ewolucyjny?
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.application.Application;
@@ -13,7 +13,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class EvolutionSimulatorApp extends Application {
+public class EvolutionSimulatorApp extends Application {    // lepiej trzymać tę klasę poziom wyżej, żeby łatwiej użytkownikowi było ją znaleźć
 
     @Override
     public void start(Stage stage) {
@@ -46,11 +46,11 @@ public class EvolutionSimulatorApp extends Application {
         boolean isTwoMap = true;
 
         try{
-            Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/appSettings.json"));
+            Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/appSettings.json"));  // json to nie źródło (fmxl też nie bardzo), więc nie powinien być w src
             JsonObject parser = JsonParser.parseReader(reader).getAsJsonObject();
             isTwoMap = parser.get("twoMaps").getAsBoolean();
 
-        }catch (Exception ex){
+        }catch (Exception ex){  // wszystkie wyjątki do jednego worka
             ex.printStackTrace();
         }
 

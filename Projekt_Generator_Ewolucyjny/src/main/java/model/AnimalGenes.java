@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class AnimalGenes {
-    private final int genesLength = 32;
+    private final int genesLength = 32; // to pole mogłoby być statyczne
     private final int possibleDifferentGenes = 8;
     private final int[] genes = new int[genesLength];
-    private final Random random = new Random();
+    private final Random random = new Random(); // to pole mogłoby być statyczne
 
     public AnimalGenes(){
         fillGenesArray();
@@ -52,7 +52,7 @@ public class AnimalGenes {
     }
 
     private void fillGenesArray(){
-        for(int i = 0; i < 8; i++)
+        for(int i = 0; i < 8; i++)  // czemu akurat 8?
             genes[i] = i;
 
         for(int i = 8; i< genesLength; i++)
@@ -61,7 +61,7 @@ public class AnimalGenes {
         sortGenesArray();
     }
 
-    private void sortGenesArray(){
+    private void sortGenesArray(){  // ta metoda właściwie nic nie wnosi
         Arrays.sort(genes);
     }
 

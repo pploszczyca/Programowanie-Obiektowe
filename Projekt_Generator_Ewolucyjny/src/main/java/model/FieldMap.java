@@ -10,7 +10,7 @@ import java.util.*;
 public class FieldMap implements IPositionChangeObserver{
     final private Map<Vector2d, FieldMapCell> animals;
     final private Map<Vector2d, Grass> grassFields;
-    private final Vector2d lowerLeft;
+    private final Vector2d lowerLeft;   // czym się różni final private od private final?
     private final Vector2d upperRight;
     private final Vector2d jungleLowerLeft;
     private final Vector2d jungleUpperRight;
@@ -71,7 +71,7 @@ public class FieldMap implements IPositionChangeObserver{
     private boolean canRandGrassOutsideJungle() {
         for(int x = lowerLeft.x; x <= upperRight.x; x++){
             for(int y = lowerLeft.y; y <= upperRight.y; y++){
-                if(!(isInJungle(new Vector2d(x,y))) && !isOccupied(new Vector2d(x,y))){
+                if(!(isInJungle(new Vector2d(x,y))) && !isOccupied(new Vector2d(x,y))){ // mało wydajne
                     return true;
                 }
             }
@@ -185,7 +185,7 @@ public class FieldMap implements IPositionChangeObserver{
         }
     }
 
-    public void eat(){
+    public void eat(){  // czy to na pewno zadanie dla mapy?
         for(Map.Entry<Vector2d, FieldMapCell> entry: animals.entrySet()){
             if(isOccupiedByGrass(entry.getKey())) {
                 entry.getValue().eatingGrass(simulation.getPlantEnergy());

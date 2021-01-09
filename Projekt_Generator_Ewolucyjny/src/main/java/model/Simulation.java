@@ -58,7 +58,7 @@ public class Simulation {
         map.randomPlace(randomAnimals);
     }
 
-    private void loadDataFromFile(){
+    private void loadDataFromFile(){    // czy to jest zadanie dla symulacji?
         try{
             Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/appSettings.json"));
             JsonObject parser = JsonParser.parseReader(reader).getAsJsonObject();
@@ -72,7 +72,7 @@ public class Simulation {
             plantEnergy = parser.get("plantEnergy").getAsInt();
             randomAnimals = parser.get("randomAnimals").getAsInt();
 
-        }catch (Exception ex){
+        }catch (Exception ex){  // wszystkie wyjątki do jednego worka
             ex.printStackTrace();
         }
     }
@@ -90,7 +90,7 @@ public class Simulation {
         map.run();
         map.eat();
         map.multiplication();
-        map.putGrasses();
+        map.putGrasses();   // właściwie całą robotę odwala mapa
     }
 
     public MapStatistics getStatistics(){

@@ -3,7 +3,7 @@ package model;
 import java.util.Random;
 
 public class AnimalPair {
-    public Animal firstAnimal;
+    public Animal firstAnimal;  // public?
     public Animal secondAnimal;
 
     public AnimalPair(Animal firstAnimal, Animal secondAnimal){
@@ -28,20 +28,20 @@ public class AnimalPair {
 
 
     private int[] createDivisionPoints(){
-        Random random = new Random();
+        Random random = new Random();   // nowy obiekt co wywołanie
         int firstPoint,secondPoint;
 
         firstPoint = random.nextInt(30);
 
         do{
             secondPoint = random.nextInt(31);
-        }while(secondPoint <= firstPoint);
+        }while(secondPoint <= firstPoint);  // nie lepiej ograniczyć zakres losowania?
 
         return new int[]{firstPoint, secondPoint};
     }
 
 
-    public AnimalGenes mixParentsGenes(){
+    public AnimalGenes mixParentsGenes(){   // czy to na pewno zadanie dla tej klasy, a nie dla genów?
         int[] divisionPoints = createDivisionPoints();
 
         return new AnimalGenes(firstAnimal.getGenes(0, divisionPoints[0]), secondAnimal.getGenes(divisionPoints[0]+1, divisionPoints[1]), firstAnimal.getGenes(divisionPoints[1]+1, 31));

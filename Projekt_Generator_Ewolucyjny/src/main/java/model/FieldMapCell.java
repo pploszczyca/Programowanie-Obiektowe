@@ -107,7 +107,7 @@ public class FieldMapCell implements IPositionChangeObserver{
     public AnimalPair findTwoMax(){
         sortList();
 
-        return new AnimalPair(animals.get(0), animals.get(1));
+        return new AnimalPair(animals.get(0), animals.get(1));  // a co z losowaniem w przypadku remisu?
     }
 
     public boolean enoughAnimalsForReproduction(){
