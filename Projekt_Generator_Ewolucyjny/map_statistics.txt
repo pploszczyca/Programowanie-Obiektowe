@@ -1,8 +1,0 @@
-UŚREDNIONE STATYSTYKI
-Epoka nr: 446
-Ilość zwierząt na mapie: 21.03811659192827
-Ilość roślin na mapie: 34.7017937219731
-Średnia ilość energii: 20.288618235310096
-Średni wiek zwierzęcia: 14.157627610347724
-Średnia ilość dzieci: 2.6639215022392335
-Najpopularniejszy genotyp: 00011111122223334444555566666777

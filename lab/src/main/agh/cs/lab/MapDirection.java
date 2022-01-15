@@ -2,9 +2,14 @@ package agh.cs.lab;
 
 public enum MapDirection{
     NORTH("Północ", new Vector2d(0,1)),
+    NORTH_WEST("Północny-Wschód", new Vector2d(-1,1)),
+    NORTH_EAST("Północny-Zachód", new Vector2d(1,1)),
     SOUTH("Południe", new Vector2d(0,-1)),
+    SOUTH_WEST("Południowy-sWschód", new Vector2d(-1,-1)),
+    SOUTH_EAST("Południowy-Zachód", new Vector2d(1,-1)),
     WEST("Zachód",new Vector2d(-1,0)),
     EAST("Wschód", new Vector2d(1,0));
+
 
     private String directionName;
     private Vector2d unitVector;

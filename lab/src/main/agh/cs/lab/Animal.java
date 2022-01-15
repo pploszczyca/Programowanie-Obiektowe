@@ -8,6 +8,9 @@ public class Animal implements IMapElement{
     private Vector2d position;
     private final IWorldMap map;
     private final List<IPositionChangeObserver> animalObservers;
+    private int energy;
+    private AnimalGenes genes;
+
 
     public Animal(IWorldMap map){
         this(map, new Vector2d(2,2));
@@ -20,6 +23,7 @@ public class Animal implements IMapElement{
         animalObservers = new ArrayList<>();
     }
 
+
     @Override
     public String toString(){
         switch (direction){
@@ -31,7 +35,6 @@ public class Animal implements IMapElement{
 
         throw new IllegalArgumentException();
     }
-
 
     public void move(MoveDirection direction){
         if(direction == MoveDirection.RIGHT)
@@ -53,6 +56,7 @@ public class Animal implements IMapElement{
             }
         }
     }
+
 
     public Vector2d getPosition(){
         return position;

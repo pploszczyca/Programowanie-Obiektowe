@@ -1,5 +1,6 @@
 package agh.cs.lab;
 
+
 public class World {
     public static void main(String[] args){
         try {
